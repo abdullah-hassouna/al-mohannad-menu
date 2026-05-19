@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>شاورما المهند</title>
+    <link id="siteFavicon" rel="icon" type="image/png" href="" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="js/script.js" defer></script>
+  </head>
+  <body>
+    <!-- WATERMARK -->
+    <div id="pageWatermark"><div id="pageWatermarkEmoji"></div></div>
+
+    <!-- SYNC -->
+    <div id="syncIndicator">
+      <span class="dot"></span>
+      <span class="sync-text"></span>
+    </div>
+
+    <!-- TOAST -->
+    <div id="statusToast"></div>
+
+    <!-- LOADER -->
+    <div id="pageLoader">
+      <div class="loader-ring">
+        <svg
+          viewBox="0 0 90 90"
+          width="90"
+          height="90"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <circle class="track" cx="45" cy="45" r="35" />
+          <circle
+            class="arc"
+            cx="45"
+            cy="45"
+            r="35"
+            transform="rotate(-90 45 45)"
+          />
+        </svg>
+      </div>
+      <div class="loader-emoji">🌯</div>
+      <div class="loader-text">جاري تحضير شاورما المهند...</div>
+      <div class="loader-dots"><span></span><span></span><span></span></div>
+    </div>
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-bg">
+        <div class="hero-circle"></div>
+        <div class="hero-circle"></div>
+        <div class="hero-circle"></div>
+      </div>
+      <div class="hero-watermark">
+        <img id="heroWatermarkImg" src="" alt="" />
+        <span id="heroWatermarkEmoji">🌯</span>
+      </div>
+      <div class="logo-wrap" id="logoWrap" title="اضغط لدخول لوحة التحكم">
+        <span class="logo-emoji" id="logoEmoji">🌯</span>
+        <img id="logoImg" src="" alt="شعار المطعم" />
+      </div>
+      <h1 id="heroTitle">شاورما المهند</h1>
+      <p class="hero-sub" id="heroSub">
+        أشهى شاورما بالفحم — طعم الأصالة بكل لقمة 🔥
+      </p>
+      <p class="hero-hint">📍 اضغط على الشعار لدخول لوحة المالك</p>
+      <div class="hero-badges" id="heroBadges">
+        <span class="hero-badge">🔥 مشوي على الفحم</span>
+        <span class="hero-badge">🌿 خامات طازجة</span>
+        <span class="hero-badge">⚡ توصيل سريع</span>
+      </div>
+      <div class="hero-socials" id="heroSocials"></div>
+      <div class="wave-wrap">
+        <svg
+          class="wave-layer wave-layer-3"
+          viewBox="0 0 1440 72"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          height="72"
+        >
+          <path
+            d="M0,36 C180,72 360,0 540,36 C720,72 900,0 1080,36 C1260,72 1440,36 1440,36 L1440,72 L0,72 Z"
+            fill="#FFFBF5"
+          />
+        </svg>
+        <svg
+          class="wave-layer wave-layer-2"
+          viewBox="0 0 1440 72"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          height="72"
+        >
+          <path
+            d="M0,44 C200,14 400,62 600,38 C800,14 1000,58 1200,34 C1320,20 1380,42 1440,44 L1440,72 L0,72 Z"
+            fill="#FFFBF5"
+          />
+        </svg>
+        <svg
+          class="wave-layer wave-layer-1"
+          viewBox="0 0 1440 72"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          height="72"
+        >
+          <path
+            d="M0,48 C120,24 240,64 360,42 C480,20 600,60 720,42 C840,24 960,56 1080,40 C1200,24 1320,52 1440,48 L1440,72 L0,72 Z"
+            fill="#FFFBF5"
+          />
+        </svg>
+      </div>
+    </header>
+
+    <!-- NAV -->
+    <nav class="nav"><div class="nav-inner" id="navInner"></div></nav>
+
+    <!-- MAIN -->
+    <main class="main" id="mainContent"></main>
+
+    <!-- FAB -->
+    <button class="fab" id="fabBtn">
+      <svg viewBox="0 0 24 24">
+        <path
+          d="M12 1C9.79 1 8 2.79 8 5c0 2.21 1.79 4 4 4s4-1.79 4-4c0-2.21-1.79-4-4-4zm0 9c-5.33 0-8 2.67-8 4v2h16v-2c0-1.33-2.67-4-8-4z"
+        />
+      </svg>
+      لوحة المالك
+    </button>
+
+    <!-- Floating WhatsApp Button -->
+    <a id="whatsappFloat" class="whatsapp-float" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" width="24" height="24">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" fill="white"/>
+      </svg>
+      <span class="whatsapp-label">راسلنا</span>
+    </a>
+
+    <!-- ══════════ OVERLAYS ══════════ -->
+
+    <!-- Login -->
+    <div class="ov" id="loginOv">
+      <div class="modal" style="max-width: 370px">
+        <div class="mhd">
+          <span class="mtitle">🔑 دخول المالك</span>
+          <button class="mclose" data-close="loginOv">✕</button>
+        </div>
+        <div class="mbd">
+          <div class="login-box">
+            <p>أدخل كلمة المرور للوصول للوحة التحكم</p>
+            <div class="fg">
+              <label>كلمة المرور</label>
+              <input type="password" id="pwIn" placeholder="••••••" />
+            </div>
+            <p
+              id="pwErr"
+              style="
+                color: var(--red);
+                font-size: 0.82rem;
+                margin-top: 4px;
+                display: none;
+              "
+            >
+              ❌ كلمة المرور غير صحيحة
+            </p>
+            <div class="brow" style="justify-content: center">
+              <button class="btn btn-p" id="loginBtn">دخول</button>
+              <button class="btn btn-g" data-close="loginOv">إلغاء</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="ov" id="adminOv">
+      <div class="modal" style="max-width: 550px">
+        <div class="mhd">
+          <span class="mtitle">⚙️ لوحة التحكم</span>
+          <button class="mclose" data-close="adminOv">✕</button>
+        </div>
+        <div class="mbd">
+          <div class="atabs">
+            <button class="atab active" data-sec="menus">📂 القوائم</button>
+            <button class="atab" data-sec="items">🌯 الأصناف</button>
+            <button class="atab" data-sec="add">➕ صنف جديد</button>
+            <button class="atab" data-sec="settings">🔧 إعدادات</button>
+          </div>
+
+          <!-- Menus -->
+          <div class="asec active" id="sec-menus">
+            <div class="fg">
+              <label>اسم القائمة الجديدة</label
+              ><input
+                type="text"
+                id="newMName"
+                placeholder="مثال: شاورما دجاج"
+              />
+            </div>
+            <div class="fg">
+              <label>أيقونة القائمة (إيموجي)</label
+              ><input
+                type="text"
+                id="newMIcon"
+                placeholder="🌯"
+                maxlength="4"
+              />
+            </div>
+            <div class="fg">
+              <label>صورة غلاف القائمة</label>
+              <label class="uplbl" for="menuImgFile"
+                ><span>🖼️</span>رفع صورة غلاف</label
+              >
+              <input
+                type="file"
+                id="menuImgFile"
+                accept="image/*"
+                style="display: none"
+              />
+              <img id="menuImgPrev" class="prev-img" />
+            </div>
+            <button class="btn btn-p" id="addMenuBtn">➕ إضافة القائمة</button>
+            <hr class="divider" />
+            <div id="menusList"></div>
+          </div>
+
+          <!-- Items list -->
+          <div class="asec" id="sec-items"><div id="adminItems"></div></div>
+
+          <!-- Add item -->
+          <div class="asec" id="sec-add">
+            <div class="fg">
+              <label>اسم الصنف *</label
+              ><input
+                type="text"
+                id="iName"
+                placeholder="مثال: شاورما دجاج حارة"
+              />
+            </div>
+            <div class="fg">
+              <label>الوصف</label
+              ><textarea
+                id="iDesc"
+                placeholder="وصف شهي يجذب الزبائن..."
+              ></textarea>
+            </div>
+            <div class="fg">
+              <label>السعر بالشيكل (₪) *</label
+              ><input
+                type="number"
+                id="iPrice"
+                placeholder="25"
+                min="0"
+                step="0.5"
+              />
+            </div>
+            <div class="fg">
+              <label>القائمة *</label
+              ><select id="iMenu"></select>
+            </div>
+            <div class="fg">
+              <label>تمييز الصنف</label>
+              <select id="iBadge">
+                <option value="">— بدون تمييز —</option>
+                <option value="الأكثر طلباً">⭐ الأكثر طلباً</option>
+                <option value="جديد">🆕 جديد</option>
+                <option value="عرض اليوم">🔥 عرض اليوم</option>
+                <option value="مميز">💎 مميز</option>
+              </select>
+            </div>
+            <div class="fg">
+              <label>صورة الصنف</label>
+              <label class="uplbl" for="iImgFile"
+                ><span>📷</span>اضغط لرفع صورة الصنف</label
+              >
+              <input
+                type="file"
+                id="iImgFile"
+                accept="image/*"
+                style="display: none"
+              />
+              <img id="iImgPrev" class="prev-img" />
+            </div>
+            <div class="brow">
+              <button class="btn btn-p" id="saveItemBtn">💾 حفظ الصنف</button>
+              <button class="btn btn-g" id="resetAddBtn">مسح الحقول</button>
+            </div>
+          </div>
+
+          <!-- Settings -->
+          <div class="asec" id="sec-settings">
+            <div class="fg">
+              <label>اسم المطعم</label>
+              <input type="text" id="sName" placeholder="شاورما المهند" />
+            </div>
+            <div class="fg">
+              <label>الوصف التعريفي</label>
+              <input
+                type="text"
+                id="sDesc"
+                placeholder="أشهى شاورما بالفحم..."
+              />
+            </div>
+            <button class="btn btn-p" id="saveHeroBtn">💾 حفظ العنوان</button>
+            <hr class="divider" />
+            <div class="fg">
+              <label>شعار المطعم</label>
+              <label class="uplbl" for="logoFile"
+                ><span>🏪</span>رفع شعار المطعم</label
+              >
+              <input
+                type="file"
+                id="logoFile"
+                accept="image/*"
+                style="display: none"
+              />
+            </div>
+            <hr class="divider" />
+            <p
+              style="
+                font-size: 0.84rem;
+                font-weight: 700;
+                color: var(--g800);
+                margin-bottom: 12px;
+              "
+            >
+              📱 التواصل الاجتماعي
+            </p>
+            <div class="fg">
+              <label>📘 فيسبوك</label>
+              <input
+                type="url"
+                id="socialFb"
+                placeholder="https://facebook.com/yourpage"
+                dir="ltr"
+              />
+            </div>
+            <div class="fg">
+              <label>📸 انستقرام</label>
+              <input
+                type="url"
+                id="socialIg"
+                placeholder="https://instagram.com/yourpage"
+                dir="ltr"
+              />
+            </div>
+            <div class="fg">
+              <label>💬 واتساب (للطلبات)</label>
+              <input
+                type="tel"
+                id="socialWa"
+                placeholder="970599123456"
+                dir="ltr"
+              />
+              <small>الرقم بالصيغة الدولية بدون + مثال: 970599123456</small>
+              <div id="waPreviewWrap"></div>
+            </div>
+            <button class="btn btn-p" id="saveSocialsBtn">
+              💾 حفظ الروابط
+            </button>
+            <hr class="divider" />
+            <div class="fg">
+              <label>تغيير كلمة المرور</label>
+              <input
+                type="password"
+                id="newPw"
+                placeholder="اتركه فارغاً للإبقاء على الحالية"
+              />
+            </div>
+            <button class="btn btn-p" id="savePwBtn">💾 حفظ كلمة المرور</button>
+            <hr class="divider" />
+            <div class="danger-zone">
+              <p class="danger-title">⚠️ منطقة الخطر</p>
+              <button class="btn btn-d btn-sm" id="resetAllBtn">
+                🗑️ مسح كل البيانات
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Item -->
+    <div class="ov" id="editOv">
+      <div class="modal">
+        <div class="mhd">
+          <span class="mtitle">✏️ تعديل الصنف</span>
+          <button class="mclose" data-close="editOv">✕</button>
+        </div>
+        <div class="mbd">
+          <input type="hidden" id="eId" />
+          <div class="fg">
+            <label>الاسم</label><input type="text" id="eName" />
+          </div>
+          <div class="fg">
+            <label>الوصف</label><textarea id="eDesc"></textarea>
+          </div>
+          <div class="fg">
+            <label>السعر (₪)</label
+            ><input type="number" id="ePrice" min="0" step="0.5" />
+          </div>
+          <div class="fg">
+            <label>القائمة</label
+            ><select id="eMenu"></select>
+          </div>
+          <div class="fg">
+            <label>التمييز</label>
+            <select id="eBadge">
+              <option value="">— بدون تمييز —</option>
+              <option value="الأكثر طلباً">⭐ الأكثر طلباً</option>
+              <option value="جديد">🆕 جديد</option>
+              <option value="عرض اليوم">🔥 عرض اليوم</option>
+              <option value="مميز">💎 مميز</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>تغيير الصورة</label>
+            <label class="uplbl" for="eImgFile"
+              ><span>📷</span>رفع صورة جديدة</label
+            >
+            <input
+              type="file"
+              id="eImgFile"
+              accept="image/*"
+              style="display: none"
+            />
+            <img id="eImgPrev" class="prev-img" />
+          </div>
+          <div class="brow">
+            <button class="btn btn-p" id="updateItemBtn">
+              💾 حفظ التعديلات
+            </button>
+            <button class="btn btn-g" data-close="editOv">إلغاء</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Menu -->
+    <div class="ov" id="editMenuOv">
+      <div class="modal" style="max-width: 400px">
+        <div class="mhd">
+          <span class="mtitle">✏️ تعديل القائمة</span>
+          <button class="mclose" data-close="editMenuOv">✕</button>
+        </div>
+        <div class="mbd">
+          <input type="hidden" id="eMId" />
+          <div class="fg">
+            <label>الاسم</label><input type="text" id="eMName" />
+          </div>
+          <div class="fg">
+            <label>الأيقونة</label
+            ><input type="text" id="eMIcon" maxlength="4" />
+          </div>
+          <div class="fg">
+            <label>صورة الغلاف</label>
+            <label class="uplbl" for="eMImgFile"
+              ><span>🖼️</span>رفع صورة غلاف</label
+            >
+            <input
+              type="file"
+              id="eMImgFile"
+              accept="image/*"
+              style="display: none"
+            />
+            <img id="eMImgPrev" class="prev-img" />
+          </div>
+          <div class="brow">
+            <button class="btn btn-p" id="updateMenuBtn">💾 حفظ</button>
+            <button class="btn btn-g" data-close="editMenuOv">إلغاء</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
