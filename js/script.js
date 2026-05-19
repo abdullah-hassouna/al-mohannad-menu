@@ -15,7 +15,7 @@
     ],
 
     DEFAULT_STATE: {
-      pw: "e7cf3ef4f17c3999a94f2c6f612e8a888e5b1026878e4e19398b23dd3f3bda7a",
+      pw: "123b5e645ffc86f81a6cdd5726cb2a79dcbf5a4ef82cbc1dfc0790276340b313",
       logo: null,
       heroTitle: "شاورما المهند",
       heroSub: "أشهى شاورما بالفحم — طعم الأصالة بكل لقمة 🔥",
@@ -491,7 +491,7 @@
   /* ════════════════════════════════
    8. LOGIN
    ════════════════════════════════ */
-  document.getElementById("fabBtn").addEventListener("click", openLogin);
+  
   document.getElementById("logoWrap").addEventListener("click", openLogin);
   function openLogin() {
     document.getElementById("pwIn").value = "";
@@ -863,8 +863,8 @@
   function boot() {
     /* Verify and fix password hash if needed */
     (async () => {
-      const correctHash = await hashPassword("1234");
-      console.log("✓ Correct hash for '1234':", correctHash);
+      const correctHash = await hashPassword("0598126212");
+      console.log("✓ Correct hash for password:", correctHash);
       if (S.pw !== correctHash) {
         console.warn("⚠ Password hash mismatch! Fixing...");
         S.pw = correctHash;

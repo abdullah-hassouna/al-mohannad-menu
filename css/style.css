@@ -1,19 +1,19 @@
 /* ═══════════════ VARIABLES & RESET ═══════════════ */
 :root {
-  --amber: #d97706;
-  --amber-dark: #92400e;
-  --amber-deep: #78350f;
-  --amber-light: #fef3c7;
-  --amber-pale: #fffbeb;
-  --amber-glow: rgba(217, 119, 6, 0.18);
-  --char: #1c1917;
-  --char-2: #292524;
-  --cream: #fffbf5;
-  --g100: #f5f0e8;
-  --g200: #e8e0d0;
-  --g400: #b8a898;
-  --g600: #8a7a6a;
-  --g800: #4a3828;
+  --amber: #dc2626;
+  --amber-dark: #991b1b;
+  --amber-deep: #7f1d1d;
+  --amber-light: #fee2e2;
+  --amber-pale: #fff5f5;
+  --amber-glow: rgba(220, 38, 38, 0.18);
+  --char: #111111;
+  --char-2: #1a1a1a;
+  --cream: #ffffff;
+  --g100: #f5f5f5;
+  --g200: #e5e5e5;
+  --g400: #a3a3a3;
+  --g600: #737373;
+  --g800: #262626;
   --red: #dc2626;
   --green: #16a34a;
   --font: "Cairo", sans-serif;
@@ -80,10 +80,10 @@ body {
 @keyframes pulseAmber {
   0%,
   100% {
-    box-shadow: 0 0 0 0 rgba(217, 119, 6, 0.4);
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
   }
   50% {
-    box-shadow: 0 0 0 10px rgba(217, 119, 6, 0);
+    box-shadow: 0 0 0 10px rgba(220, 38, 38, 0);
   }
 }
 @keyframes scaleIn {
@@ -314,7 +314,7 @@ body {
   transition: background 0.3s;
 }
 #syncIndicator.syncing .dot {
-  background: #f59e0b;
+  background: #ef4444;
   animation: pulseAmber 1s infinite;
 }
 #syncIndicator.synced .dot {
@@ -366,7 +366,7 @@ body {
     155deg,
     var(--amber-deep) 0%,
     var(--amber-dark) 50%,
-    #b45309 100%
+    #b91c1c 100%
   );
   min-height: clamp(260px, 40vw, 360px);
   position: relative;
@@ -416,7 +416,7 @@ body {
   position: absolute;
   inset: 0;
   background-image: radial-gradient(
-    rgba(255, 220, 100, 0.12) 1.5px,
+    rgba(255, 180, 180, 0.12) 1.5px,
     transparent 1.5px
   );
   background-size: 30px 30px;
@@ -612,7 +612,7 @@ body {
   top: 0;
   z-index: 90;
   border-bottom: 1.5px solid var(--g200);
-  box-shadow: 0 4px 24px rgba(217, 119, 6, 0.08);
+  box-shadow: 0 4px 24px rgba(220, 38, 38, 0.08);
 }
 .nav-inner {
   display: flex;
@@ -662,13 +662,13 @@ body {
   border-color: var(--amber-light);
   background: var(--amber-pale);
   transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.14);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.14);
 }
 .nav-btn.active {
   color: #fff;
   background: var(--amber-dark);
   border-color: var(--amber-dark);
-  box-shadow: 0 4px 18px rgba(146, 64, 14, 0.38);
+  box-shadow: 0 4px 18px rgba(153, 27, 27, 0.38);
   transform: translateY(-1px);
 }
 .nav-btn.active .nav-icon {
@@ -697,7 +697,7 @@ body {
   height: clamp(150px, 22vw, 230px);
   margin-bottom: clamp(18px, 3.5vw, 36px);
   cursor: default;
-  box-shadow: 0 8px 28px rgba(146, 64, 14, 0.13);
+  box-shadow: 0 8px 28px rgba(153, 27, 27, 0.13);
 }
 .cat-banner-img {
   width: 100%;
@@ -745,7 +745,7 @@ body {
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(120, 53, 15, 0.9) 0%,
+    rgba(127, 29, 29, 0.9) 0%,
     rgba(0, 0, 0, 0) 55%
   );
   display: flex;
@@ -795,7 +795,7 @@ body {
   border-radius: clamp(14px, 2.5vw, 22px);
   overflow: hidden;
   border: 1.5px solid var(--g200);
-  box-shadow: 0 2px 14px rgba(146, 64, 14, 0.06);
+  box-shadow: 0 2px 14px rgba(153, 27, 27, 0.06);
   transition:
     transform 0.32s cubic-bezier(0.34, 1.56, 0.64, 1),
     box-shadow 0.32s,
@@ -822,7 +822,7 @@ body {
 }
 .item-card:hover {
   transform: translateY(-7px) scale(1.02);
-  box-shadow: 0 18px 48px rgba(146, 64, 14, 0.17);
+  box-shadow: 0 18px 48px rgba(153, 27, 27, 0.17);
   border-color: var(--amber-light);
 }
 /* popularity badge */
@@ -863,7 +863,7 @@ body {
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(120, 53, 15, 0.28) 0%,
+    rgba(127, 29, 29, 0.28) 0%,
     transparent 50%
   );
   opacity: 0;
@@ -994,7 +994,7 @@ body {
   cursor: pointer;
   z-index: 80;
   font-family: var(--font);
-  box-shadow: 0 4px 20px rgba(146, 64, 14, 0.5);
+  box-shadow: 0 4px 20px rgba(153, 27, 27, 0.5);
   transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: flex;
   align-items: center;
@@ -1005,7 +1005,7 @@ body {
   background: var(--amber-deep);
   transform: scale(1.07);
   animation: none;
-  box-shadow: 0 8px 28px rgba(120, 53, 15, 0.55);
+  box-shadow: 0 8px 28px rgba(127, 29, 29, 0.55);
 }
 .fab svg {
   width: 16px;
@@ -1206,7 +1206,7 @@ body {
   outline: none;
   border-color: var(--amber);
   background: #fff;
-  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.12);
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
 }
 .fg textarea {
   resize: vertical;
@@ -1242,12 +1242,12 @@ body {
 .btn-p {
   background: var(--amber-dark);
   color: #fff;
-  box-shadow: 0 3px 12px rgba(146, 64, 14, 0.3);
+  box-shadow: 0 3px 12px rgba(153, 27, 27, 0.3);
 }
 .btn-p:hover {
   background: var(--amber-deep);
   transform: translateY(-1px);
-  box-shadow: 0 5px 16px rgba(120, 53, 15, 0.35);
+  box-shadow: 0 5px 16px rgba(127, 29, 29, 0.35);
 }
 .btn-g {
   background: var(--g100);
