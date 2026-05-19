@@ -505,7 +505,15 @@
   });
   async function checkPw() {
     const inputPassword = document.getElementById("pwIn").value;
-    const isValid = await validatePassword(inputPassword, S.pw);
+    const storedHash = S.pw;
+    const inputHash = await hashPassword(inputPassword);
+    
+    console.log("Input Password:", inputPassword);
+    console.log("Input Hash:", inputHash);
+    console.log("Stored Hash:", storedHash);
+    console.log("Match:", inputHash === storedHash);
+    
+    const isValid = await validatePassword(inputPassword, storedHash);
     if (isValid) {
       closeOv("loginOv");
       openOv("adminOv");
@@ -853,6 +861,17 @@
    12. BOOT
    ════════════════════════════════ */
   function boot() {
+    /* Verify and fix password hash if needed */
+    (async () => {
+      const correctHash = await hashPassword("1234");
+      console.log("✓ Correct hash for '1234':", correctHash);
+      if (S.pw !== correctHash) {
+        console.warn("⚠ Password hash mismatch! Fixing...");
+        S.pw = correctHash;
+        saveState();
+      }
+    })();
+    
     render();
     /* hide loader */
     const hideLoader = () => {
