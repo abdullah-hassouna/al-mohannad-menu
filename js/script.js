@@ -19,7 +19,11 @@
       logo: null,
       heroTitle: "شاورما المهند",
       heroSub: "أشهى شاورما بالفحم — طعم الأصالة بكل لقمة 🔥",
-      socials: { fb: "", ig: "", wa: "" },
+      socials: {
+        fb: "https://www.facebook.com/mohanadresturant",
+        ig: "https://www.instagram.com/mohanad_resturant/",
+        wa: "972593311135"
+      },
       menus: [
         { id: "m1", name: "شاورما دجاج", icon: "🍗", img: null },
         { id: "m2", name: "شاورما لحم", icon: "🥩", img: null },
@@ -234,6 +238,9 @@
     const s = document.getElementById("heroSub");
     if (t) t.textContent = S.heroTitle || "شاورما المهند";
     if (s) s.textContent = S.heroSub || "";
+    
+    const ft = document.getElementById("footerTitle");
+    if (ft) ft.textContent = S.heroTitle || "شاورما المهند";
   }
 
   function renderNav() {
@@ -330,14 +337,28 @@
   function renderLogo() {
     const img = document.getElementById("logoImg");
     const em = document.getElementById("logoEmoji");
-    if (!img || !em) return;
-    if (S.logo) {
-      img.src = S.logo;
-      img.style.display = "block";
-      em.style.display = "none";
-    } else {
-      img.style.display = "none";
-      em.style.display = "block";
+    if (img && em) {
+      if (S.logo) {
+        img.src = S.logo;
+        img.style.display = "block";
+        em.style.display = "none";
+      } else {
+        img.style.display = "none";
+        em.style.display = "block";
+      }
+    }
+
+    const fImg = document.getElementById("footerLogoImg");
+    const fEm = document.getElementById("footerLogoEmoji");
+    if (fImg && fEm) {
+      if (S.logo) {
+        fImg.src = S.logo;
+        fImg.style.display = "block";
+        fEm.style.display = "none";
+      } else {
+        fImg.style.display = "none";
+        fEm.style.display = "block";
+      }
     }
   }
 
@@ -871,7 +892,17 @@
         saveState();
       }
     })();
-    
+
+    /* Pre-fill default restaurant socials if they are empty, unassigned, or set to developer links by mistake */
+    if (!S.socials || !S.socials.fb || S.socials.fb === "" || S.socials.fb === "https://www.facebook.com/A3.Media0") {
+      S.socials = {
+        fb: "https://www.facebook.com/mohanadresturant",
+        ig: "https://www.instagram.com/mohanad_resturant/",
+        wa: "972593311135"
+      };
+      saveState();
+    }
+
     render();
     /* hide loader */
     const hideLoader = () => {
