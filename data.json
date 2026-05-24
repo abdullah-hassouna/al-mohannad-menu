@@ -1,0 +1,183 @@
+{
+  "pw": "123b5e645ffc86f81a6cdd5726cb2a79dcbf5a4ef82cbc1dfc0790276340b313",
+  "logo": null,
+  "heroTitle": "شاورما المهند",
+  "heroSub": "أشهى شاورما بالفحم — طعم الأصالة بكل لقمة 🔥",
+  "socials": {
+    "fb": "https://www.facebook.com/mohanadresturant",
+    "ig": "https://www.instagram.com/mohanad_resturant/",
+    "wa": "972593311135"
+  },
+  "menus": [
+    { "id": "m1", "name": "شاورما", "icon": "🍗", "img": null },
+    { "id": "m2", "name": "شاورما لحم", "icon": "🥩", "img": null },
+    { "id": "m6", "name": "وجبات", "icon": "🍖", "img": null },
+    { "id": "m3", "name": "مشاوي وأطباق", "icon": "🔥", "img": null },
+    { "id": "m4", "name": "مشروبات", "icon": "🥤", "img": null },
+    { "id": "m5", "name": "مقبلات", "icon": "🥗", "img": null }
+  ],
+  "items": [
+    {
+      "id": "i14",
+      "name": "شاورما دبل دبل",
+      "desc": "شاورما دبل دبل مميزة بخبز الصاج المحمص على الفحم مع صوص الثوم والبطاطس",
+      "price": 44,
+      "menuId": "m1",
+      "img": "public/imgs/شاورما دبل دبل.jpeg",
+      "badge": "مميز"
+    },
+    {
+      "id": "i15",
+      "name": "شاورما دبل عادي",
+      "desc": "وجبة شاورما دبل حجم عادي مع الثومية اللذيذة والمخلل المقرمش",
+      "price": 36,
+      "menuId": "m1",
+      "img": "public/imgs/شاورما دبل عادي.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i16",
+      "name": "شاورما صاروخ",
+      "desc": "ساندويتش شاورما صاروخ كبير شهي مع صوص شاورما المهند الخاص",
+      "price": 28,
+      "menuId": "m1",
+      "img": "public/imgs/شاورما صاروخ.jpeg",
+      "badge": "الأكثر طلباً"
+    },
+    {
+      "id": "i17",
+      "name": "شاورما عادي بالجبنة",
+      "desc": "ساندويتش شاورما دجاج عادي غني بالجبنة المذوبة اللذيذة",
+      "price": 24,
+      "menuId": "m1",
+      "img": "public/imgs/شاورما عادي بالجبنة.jpeg",
+      "badge": "جديد"
+    },
+    {
+      "id": "i18",
+      "name": "شاورما عادي",
+      "desc": "ساندويتش شاورما عادي دجاج مشوي بالتوابل الأصيلة مع الثوم",
+      "price": 20,
+      "menuId": "m1",
+      "img": "public/imgs/شاورما عادي.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i19",
+      "name": "فينو شاورما",
+      "desc": "شاورما دجاج شهية في خبز الفينو الطازج والناعم مع البطاطس والثوم",
+      "price": 22,
+      "menuId": "m1",
+      "img": "public/imgs/فينو شاورما.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i19",
+      "name": "فينو شاورما",
+      "desc": "شاورما دجاج شهية في خبز الفينو الطازج والناعم مع البطاطس والثوم",
+      "price": 22,
+      "menuId": "m1",
+      "img": "public/imgs/فينو شاورما.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i19",
+      "name": "فينو شاورما",
+      "desc": "شاورما دجاج شهية في خبز الفينو الطازج والناعم مع البطاطس والثوم",
+      "price": 22,
+      "menuId": "m1",
+      "img": "public/imgs/فينو شاورما.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i20",
+      "name": "بيكانتي",
+      "desc": "",
+      "price": 10,
+      "menuId": "m5",
+      "img": "public/imgs/بيكانتي.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i21",
+      "name": "ذرة بالمايونيز",
+      "desc": "",
+      "price": 10,
+      "menuId": "m5",
+      "img": "public/imgs/ذرة بالمايونيز.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i22",
+      "name": "سلطة تركية",
+      "desc": "",
+      "price": 10,
+      "menuId": "m5",
+      "img": "public/imgs/سلطة تركية.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i23",
+      "name": "سلطة ملفوف احمر",
+      "desc": "",
+      "price": 10,
+      "menuId": "m5",
+      "img": "public/imgs/سلطة ملفوف احمر.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i24",
+      "name": "كول سلو",
+      "desc": "",
+      "price": 10,
+      "menuId": "m5",
+      "img": "public/imgs/كول سلو.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i25",
+      "name": "متومة",
+      "desc": "",
+      "price": 10,
+      "menuId": "m5",
+      "img": "public/imgs/متومة.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i26",
+      "name": "اساور",
+      "desc": "",
+      "price": 10,
+      "menuId": "m5",
+      "img": "public/imgs/اساور.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i27",
+      "name": "صحن شاورما وقية  و نص كيلو و كيلو",
+      "desc": "",
+      "price": 10,
+      "menuId": "m5",
+      "img": "public/imgs/صحن شاورما وقية  و نص كيلو و كيلو.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i28",
+      "name": "صفيهة",
+      "desc": "",
+      "price": 10,
+      "menuId": "m5",
+      "img": "public/imgs/صفيهة.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i29",
+      "name": "وجبة شاورما صغيرة",
+      "desc": "",
+      "price": 10,
+      "menuId": "m5",
+      "img": "public/imgs/وجبة شاورما صغيرة.jpeg",
+      "badge": ""
+    }
+  ]
+}

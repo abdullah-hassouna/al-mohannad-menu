@@ -3,7 +3,7 @@
   "use strict";
 
   const APP_DATA = {
-    STORAGE_KEY: "shawarma_app_v2",
+    STORAGE_KEY: "shawarma_app_v3",
 
     BG_COLORS: [
       "linear-gradient(135deg,#FEF3C7 0%,#FDE68A 100%)",
@@ -22,133 +22,10 @@
       socials: {
         fb: "https://www.facebook.com/mohanadresturant",
         ig: "https://www.instagram.com/mohanad_resturant/",
-        wa: "972593311135"
+        wa: "972593311135",
       },
-      menus: [
-        { id: "m1", name: "شاورما دجاج", icon: "🍗", img: null },
-        { id: "m2", name: "شاورما لحم", icon: "🥩", img: null },
-        { id: "m3", name: "مشاوي وأطباق", icon: "🔥", img: null },
-        { id: "m4", name: "مشروبات", icon: "🥤", img: null },
-      ],
-      items: [
-        {
-          id: "i1",
-          name: "شاورما دجاج عادية",
-          desc: "شاورما دجاج مشوي بالتوابل الأصيلة مع الثوم والخضار الطازجة",
-          price: 20,
-          menuId: "m1",
-          img: null,
-          badge: "الأكثر طلباً",
-        },
-        {
-          id: "i2",
-          name: "شاورما دجاج حارة",
-          desc: "لمن يحب الحرارة — دجاج مشوي مع صلصة الفلفل الحار والسماق",
-          price: 22,
-          menuId: "m1",
-          img: null,
-          badge: "",
-        },
-        {
-          id: "i3",
-          name: "شاورما دجاج بالجبن",
-          desc: "دجاج مشوي مع جبن مذوّب وثوم بلدي وبقدونس طازج",
-          price: 24,
-          menuId: "m1",
-          img: null,
-          badge: "جديد",
-        },
-        {
-          id: "i4",
-          name: "شاورما دجاج بالكريمة",
-          desc: "دجاج ناعم بصلصة الكريمة والفطر المشوي",
-          price: 26,
-          menuId: "m1",
-          img: null,
-          badge: "",
-        },
-        {
-          id: "i5",
-          name: "شاورما لحم عادية",
-          desc: "لحم غنم مشوي على الفحم مع الطحينة والبهارات الدمشقية",
-          price: 26,
-          menuId: "m2",
-          img: null,
-          badge: "الأكثر طلباً",
-        },
-        {
-          id: "i6",
-          name: "شاورما لحم حارة",
-          desc: "لحم مشوي مع فلفل حار وبهارات الشرق الأوسط",
-          price: 28,
-          menuId: "m2",
-          img: null,
-          badge: "",
-        },
-        {
-          id: "i7",
-          name: "شاورما لحم مشكل",
-          desc: "مزيج لحم الغنم والدجاج مع الطحينة والبرغل",
-          price: 32,
-          menuId: "m2",
-          img: null,
-          badge: "مميز",
-        },
-        {
-          id: "i8",
-          name: "كباب مشوي",
-          desc: "كباب لحم بهارات طازجة مشوي على جمر الفحم يُقدّم مع الأرز والسلطة",
-          price: 35,
-          menuId: "m3",
-          img: null,
-          badge: "عرض اليوم",
-        },
-        {
-          id: "i9",
-          name: "شيش طاووق",
-          desc: "صدر دجاج متبّل في الزبادي والليمون مشوي ذهبياً",
-          price: 32,
-          menuId: "m3",
-          img: null,
-          badge: "",
-        },
-        {
-          id: "i10",
-          name: "طبق مشاوي مشكل",
-          desc: "كباب وشيش طاووق وشاورما مع مقبلات شرقية وخبز مشوي",
-          price: 55,
-          menuId: "m3",
-          img: null,
-          badge: "مميز",
-        },
-        {
-          id: "i11",
-          name: "عصير ليمون نعناع",
-          desc: "ليمون طازج بالنعناع والثلج المجروش — منعش ومثالي",
-          price: 12,
-          menuId: "m4",
-          img: null,
-          badge: "",
-        },
-        {
-          id: "i12",
-          name: "لبن أيران",
-          desc: "لبن مملّح بارد — الرفيق التقليدي للشاورما",
-          price: 8,
-          menuId: "m4",
-          img: null,
-          badge: "",
-        },
-        {
-          id: "i13",
-          name: "مياه معدنية",
-          desc: "مياه معدنية باردة 500 مل",
-          price: 4,
-          menuId: "m4",
-          img: null,
-          badge: "",
-        },
-      ],
+      menus: [],
+      items: [],
     },
   };
 
@@ -176,16 +53,34 @@
   const BG_COLORS = APP_DATA.BG_COLORS;
 
   /* ─ load/save ─ */
-  function loadState() {
+  async function loadState() {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) return JSON.parse(raw);
-    } catch (e) {}
-    return JSON.parse(JSON.stringify(DEFAULT_STATE));
+      if (raw) {
+        S = JSON.parse(raw);
+        return;
+      }
+    } catch (e) {
+      console.warn("LocalStorage load failed, fetching data.json:", e);
+    }
+
+    // Fetch from data.json
+    try {
+      const res = await fetch("data.json");
+      if (res.ok) {
+        S = await res.json();
+        saveState();
+        return;
+      }
+    } catch (e) {
+      console.error("Failed to fetch data.json:", e);
+    }
+
+    // Backup state
+    S = JSON.parse(JSON.stringify(DEFAULT_STATE));
   }
   function saveState() {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(S));
       showSync("synced", "تم الحفظ ✓");
       setTimeout(() => showSync("idle"), 2000);
     } catch (e) {
@@ -207,8 +102,8 @@
   /* ════════════════════════════════
    2. STATE
    ════════════════════════════════ */
-  let S = loadState();
-  let activeMenuId = S.menus[0]?.id || null;
+  let S = {};
+  let activeMenuId = null;
 
   /* image buffer (not persisted as-is — already base64 in state) */
   const imgBuf = {
@@ -238,7 +133,7 @@
     const s = document.getElementById("heroSub");
     if (t) t.textContent = S.heroTitle || "شاورما المهند";
     if (s) s.textContent = S.heroSub || "";
-    
+
     const ft = document.getElementById("footerTitle");
     if (ft) ft.textContent = S.heroTitle || "شاورما المهند";
   }
@@ -465,22 +360,48 @@
   });
 
   /* ════════════════════════════════
-   6. IMAGE PREVIEW HELPER
+   6. IMAGE UPLOAD & PREVIEW HELPER
    ════════════════════════════════ */
+  async function uploadImageToServer(file) {
+    const formData = new FormData();
+    formData.append("image", file);
+    try {
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: formData,
+      });
+      if (!res.ok) throw new Error("Upload failed");
+      const data = await res.json();
+      return data.url; // Vercel Blob returns "url" field
+    } catch (err) {
+      console.error("Image upload error:", err);
+      showToast("❌ فشل رفع الصورة إلى السيرفر", "error");
+      return null;
+    }
+  }
+
   function bindImgInput(inputId, prevId, bufKey) {
-    document.getElementById(inputId)?.addEventListener("change", function () {
+    document.getElementById(inputId)?.addEventListener("change", async function () {
       const f = this.files[0];
       if (!f) return;
-      const r = new FileReader();
-      r.onload = (ev) => {
-        imgBuf[bufKey] = ev.target.result;
-        const p = document.getElementById(prevId);
-        if (p) {
-          p.src = ev.target.result;
-          p.style.display = "block";
-        }
-      };
-      r.readAsDataURL(f);
+
+      // Show a local preview immediately
+      const localUrl = URL.createObjectURL(f);
+      const p = document.getElementById(prevId);
+      if (p) {
+        p.src = localUrl;
+        p.style.display = "block";
+      }
+
+      // Upload to server
+      showToast("⏳ جاري رفع الصورة...", "info", 10000);
+      const serverPath = await uploadImageToServer(f);
+      if (serverPath) {
+        imgBuf[bufKey] = serverPath;
+        showToast("✅ تم رفع الصورة بنجاح!");
+      } else {
+        imgBuf[bufKey] = null;
+      }
     });
   }
   bindImgInput("menuImgFile", "menuImgPrev", "_menuImg");
@@ -512,7 +433,7 @@
   /* ════════════════════════════════
    8. LOGIN
    ════════════════════════════════ */
-  
+
   document.getElementById("logoWrap").addEventListener("click", openLogin);
   function openLogin() {
     document.getElementById("pwIn").value = "";
@@ -528,12 +449,6 @@
     const inputPassword = document.getElementById("pwIn").value;
     const storedHash = S.pw;
     const inputHash = await hashPassword(inputPassword);
-    
-    console.log("Input Password:", inputPassword);
-    console.log("Input Hash:", inputHash);
-    console.log("Stored Hash:", storedHash);
-    console.log("Match:", inputHash === storedHash);
-    
     const isValid = await validatePassword(inputPassword, storedHash);
     if (isValid) {
       closeOv("loginOv");
@@ -578,6 +493,7 @@
   document.getElementById("addMenuBtn").addEventListener("click", () => {
     const n = document.getElementById("newMName").value.trim();
     const ic = document.getElementById("newMIcon").value.trim() || "🌯";
+    const path = document.getElementById("newMImgPath").value.trim();
     if (!n) {
       showToast("أدخل اسم القائمة", "error");
       return;
@@ -586,7 +502,7 @@
       id: "m" + Date.now(),
       name: n,
       icon: ic,
-      img: imgBuf._menuImg || null,
+      img: path ? path : imgBuf._menuImg || null,
     });
     imgBuf._menuImg = null;
     saveState();
@@ -595,6 +511,7 @@
     popMenuSels();
     document.getElementById("newMName").value = "";
     document.getElementById("newMIcon").value = "";
+    document.getElementById("newMImgPath").value = "";
     const prev = document.getElementById("menuImgPrev");
     if (prev) prev.style.display = "none";
     document.getElementById("menuImgFile").value = "";
@@ -628,10 +545,12 @@
     document.getElementById("eMId").value = id;
     document.getElementById("eMName").value = m.name;
     document.getElementById("eMIcon").value = m.icon;
+    document.getElementById("eMImgPath").value =
+      m.img && !m.img.startsWith("data:") ? m.img : "";
     const prev = document.getElementById("eMImgPrev");
     if (m.img) {
       prev.src = m.img;
-      prev.style.display = "block";
+      prev.style.display = m.img.startsWith("data:") ? "block" : "none";
     } else {
       prev.style.display = "none";
     }
@@ -646,7 +565,14 @@
     if (!m) return;
     m.name = document.getElementById("eMName").value.trim() || m.name;
     m.icon = document.getElementById("eMIcon").value.trim() || m.icon;
-    if (imgBuf._editMenuImg) m.img = imgBuf._editMenuImg;
+    const path = document.getElementById("eMImgPath").value.trim();
+    if (path) {
+      m.img = path;
+    } else if (imgBuf._editMenuImg) {
+      m.img = imgBuf._editMenuImg;
+    } else {
+      m.img = null;
+    }
     imgBuf._editMenuImg = null;
     saveState();
     render();
@@ -707,6 +633,7 @@
     const n = document.getElementById("iName").value.trim();
     const p = parseFloat(document.getElementById("iPrice").value);
     const mId = document.getElementById("iMenu").value;
+    const path = document.getElementById("iImgPath").value.trim();
     if (!n) {
       showToast("أدخل اسم الصنف", "error");
       return;
@@ -721,7 +648,7 @@
       desc: document.getElementById("iDesc").value.trim(),
       price: isNaN(p) ? 0 : p,
       menuId: mId,
-      img: imgBuf._addImg || null,
+      img: path ? path : imgBuf._addImg || null,
       badge: document.getElementById("iBadge").value,
     });
     imgBuf._addImg = null;
@@ -734,7 +661,7 @@
 
   document.getElementById("resetAddBtn").addEventListener("click", resetAdd);
   function resetAdd() {
-    ["iName", "iDesc", "iPrice"].forEach((id) => {
+    ["iName", "iDesc", "iPrice", "iImgPath"].forEach((id) => {
       const el = document.getElementById(id);
       if (el) el.value = "";
     });
@@ -763,12 +690,14 @@
     document.getElementById("eDesc").value = it.desc || "";
     document.getElementById("ePrice").value = it.price;
     document.getElementById("eBadge").value = it.badge || "";
+    document.getElementById("eImgPath").value =
+      it.img && !it.img.startsWith("data:") ? it.img : "";
     popMenuSels();
     document.getElementById("eMenu").value = it.menuId;
     const prev = document.getElementById("eImgPrev");
     if (it.img) {
       prev.src = it.img;
-      prev.style.display = "block";
+      prev.style.display = it.img.startsWith("data:") ? "block" : "none";
     } else {
       prev.style.display = "none";
     }
@@ -786,7 +715,14 @@
     it.price = parseFloat(document.getElementById("ePrice").value) || it.price;
     it.menuId = document.getElementById("eMenu").value || it.menuId;
     it.badge = document.getElementById("eBadge").value;
-    if (imgBuf._editImg) it.img = imgBuf._editImg;
+    const path = document.getElementById("eImgPath").value.trim();
+    if (path) {
+      it.img = path;
+    } else if (imgBuf._editImg) {
+      it.img = imgBuf._editImg;
+    } else {
+      it.img = null;
+    }
     imgBuf._editImg = null;
     saveState();
     render();
@@ -806,6 +742,8 @@
     document.getElementById("socialWa").value = sc.wa || "";
     document.getElementById("sName").value = S.heroTitle || "";
     document.getElementById("sDesc").value = S.heroSub || "";
+    document.getElementById("logoPath").value =
+      S.logo && !S.logo.startsWith("data:") ? S.logo : "";
     updateWaPreview();
   }
 
@@ -857,6 +795,18 @@
     r.readAsDataURL(f);
   });
 
+  document.getElementById("saveLogoPathBtn")?.addEventListener("click", () => {
+    const path = document.getElementById("logoPath").value.trim();
+    if (path) {
+      S.logo = path;
+      saveState();
+      render();
+      showToast("✅ تم حفظ مسار الشعار!");
+    } else {
+      showToast("الرجاء إدخال مسار صحيح", "error");
+    }
+  });
+
   document.getElementById("savePwBtn").addEventListener("click", async () => {
     const np = document.getElementById("newPw").value.trim();
     if (!np) {
@@ -869,36 +819,157 @@
     showToast("✅ تم تغيير كلمة المرور!");
   });
 
-  document.getElementById("resetAllBtn").addEventListener("click", () => {
-    if (!confirm("مسح كل البيانات؟ لا يمكن التراجع!")) return;
-    S = JSON.parse(JSON.stringify(DEFAULT_STATE));
-    activeMenuId = S.menus[0]?.id || null;
-    saveState();
-    render();
-    showToast("تم إعادة ضبط البيانات", "info");
+  /* ════════════════════════════════
+   11.5 JSON DATA MANAGEMENT
+   ════════════════════════════════ */
+  function exportToJson() {
+    try {
+      const dataStr = JSON.stringify(S, null, 2);
+      const blob = new Blob([dataStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "data.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast("✅ تم تصدير البيانات بنجاح!");
+    } catch (e) {
+      showToast("❌ فشل تصدير البيانات", "error");
+      console.error(e);
+    }
+  }
+
+  function importFromJson(file) {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      try {
+        const importedData = JSON.parse(e.target.result);
+        if (
+          importedData &&
+          typeof importedData === "object" &&
+          Array.isArray(importedData.menus) &&
+          Array.isArray(importedData.items)
+        ) {
+          if (
+            confirm(
+              "هل أنت متأكد من استيراد هذه البيانات؟ سيتم استبدال البيانات الحالية بالكامل.",
+            )
+          ) {
+            S = importedData;
+            activeMenuId = S.menus?.[0]?.id || null;
+            saveState();
+            render();
+            rMenusList();
+            rAdminItems();
+            popMenuSels();
+            fillSettings();
+            showToast("✅ تم استيراد البيانات وتحديث الموقع!");
+          }
+        } else {
+          showToast("❌ صيغة الملف غير صالحة أو ينقصه عناصر أساسية", "error");
+        }
+      } catch (err) {
+        showToast("❌ فشل قراءة الملف كـ JSON صحيح", "error");
+        console.error(err);
+      }
+    };
+    reader.readAsText(file);
+  }
+
+  async function reloadFromServerJson() {
+    if (
+      !confirm(
+        "تحذير: سيتم مسح التغييرات غير المصدرة واستعادة البيانات الأصلية من ملف data.json على السيرفر. هل تريد الاستمرار؟",
+      )
+    )
+      return;
+    try {
+      const res = await fetch("data.json?t=" + Date.now());
+      if (res.ok) {
+        S = await res.json();
+        activeMenuId = S.menus?.[0]?.id || null;
+        saveState();
+        render();
+        rMenusList();
+        rAdminItems();
+        popMenuSels();
+        fillSettings();
+        showToast("✅ تم تحديث البيانات بنجاح من السيرفر!");
+      } else {
+        showToast("❌ فشل العثور على ملف data.json على السيرفر", "error");
+      }
+    } catch (e) {
+      showToast("❌ فشل الاتصال بالسيرفر لجلب الملف", "error");
+      console.error(e);
+    }
+  }
+
+  document
+    .getElementById("exportJsonBtn")
+    ?.addEventListener("click", exportToJson);
+  document
+    .getElementById("importJsonFile")
+    ?.addEventListener("change", function () {
+      importFromJson(this.files[0]);
+    });
+  document
+    .getElementById("reloadFromJsonBtn")
+    ?.addEventListener("click", reloadFromServerJson);
+
+  document.getElementById("resetAllBtn").addEventListener("click", async () => {
+    if (
+      !confirm(
+        "هل أنت متأكد من إعادة تعيين كافة البيانات إلى الحالة الافتراضية من السيرفر؟ (لا يمكن التراجع)",
+      )
+    )
+      return;
+    try {
+      const res = await fetch("data.json?t=" + Date.now());
+      if (res.ok) {
+        S = await res.json();
+        activeMenuId = S.menus?.[0]?.id || null;
+        saveState();
+        render();
+        showToast("✅ تم إعادة تعيين البيانات بنجاح!", "success");
+      } else {
+        showToast("❌ فشل تحميل البيانات الافتراضية", "error");
+      }
+    } catch (e) {
+      showToast("❌ فشل الاتصال بالسيرفر لجلب الملف", "error");
+      console.error(e);
+    }
   });
 
   /* ════════════════════════════════
    12. BOOT
    ════════════════════════════════ */
-  function boot() {
+  async function boot() {
+    await loadState();
+    activeMenuId = S.menus?.[0]?.id || null;
+
     /* Verify and fix password hash if needed */
-    (async () => {
-      const correctHash = await hashPassword("0598126212");
-      console.log("✓ Correct hash for password:", correctHash);
-      if (S.pw !== correctHash) {
-        console.warn("⚠ Password hash mismatch! Fixing...");
-        S.pw = correctHash;
-        saveState();
-      }
-    })();
+    const correctHash = await hashPassword("0598126212");
+    console.log("✓ Correct hash for password:", correctHash);
+    if (S.pw !== correctHash) {
+      console.warn("⚠ Password hash mismatch! Fixing...");
+      S.pw = correctHash;
+      saveState();
+    }
 
     /* Pre-fill default restaurant socials if they are empty, unassigned, or set to developer links by mistake */
-    if (!S.socials || !S.socials.fb || S.socials.fb === "" || S.socials.fb === "https://www.facebook.com/A3.Media0") {
+    if (
+      !S.socials ||
+      !S.socials.fb ||
+      S.socials.fb === "" ||
+      S.socials.fb === "https://www.facebook.com/A3.Media0"
+    ) {
       S.socials = {
         fb: "https://www.facebook.com/mohanadresturant",
         ig: "https://www.instagram.com/mohanad_resturant/",
-        wa: "972593311135"
+        wa: "972593311135",
       };
       saveState();
     }

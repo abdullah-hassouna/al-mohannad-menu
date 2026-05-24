@@ -450,8 +450,8 @@ body {
   display: block;
 }
 .logo-wrap {
-  width: clamp(80px, 13vw, 115px);
-  height: clamp(80px, 13vw, 115px);
+  width: clamp(120px, 14.5vw, 155px);
+  height: clamp(120px, 14.5vw, 155px);
   border-radius: 50%;
   background: #fff;
   display: flex;
@@ -1639,11 +1639,10 @@ body {
   .footer {
     padding: 40px 16px 95px; /* Clear floating buttons */
   }
-  
+
   .footer-bottom {
     flex-direction: column;
     text-align: center;
     gap: 14px;
   }
 }
-
