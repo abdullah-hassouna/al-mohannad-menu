@@ -1,6 +1,6 @@
 {
   "pw": "123b5e645ffc86f81a6cdd5726cb2a79dcbf5a4ef82cbc1dfc0790276340b313",
-  "logo": null,
+  "logo": "/public/imgs/319642060_1159566254664660_6638085979014289667_n.jpg",
   "heroTitle": "شاورما المهند",
   "heroSub": "أشهى شاورما بالفحم — طعم الأصالة بكل لقمة 🔥",
   "socials": {
@@ -9,12 +9,42 @@
     "wa": "972593311135"
   },
   "menus": [
-    { "id": "m1", "name": "شاورما", "icon": "🍗", "img": null },
-    { "id": "m2", "name": "شاورما لحم", "icon": "🥩", "img": null },
-    { "id": "m6", "name": "وجبات", "icon": "🍖", "img": null },
-    { "id": "m3", "name": "مشاوي وأطباق", "icon": "🔥", "img": null },
-    { "id": "m4", "name": "مشروبات", "icon": "🥤", "img": null },
-    { "id": "m5", "name": "مقبلات", "icon": "🥗", "img": null }
+    {
+      "id": "m1",
+      "name": "شاورما",
+      "icon": "🍗",
+      "img": "public/imgs/shawarma-banner.jpeg"
+    },
+    {
+      "id": "m2",
+      "name": "شاورما لحم",
+      "icon": "🥩",
+      "img": "public/imgs/beef-shawarma-banner.jpeg"
+    },
+    {
+      "id": "m6",
+      "name": "وجبات",
+      "icon": "🍖",
+      "img": "public/imgs/meals-banner.jpeg"
+    },
+    {
+      "id": "m3",
+      "name": "مشاوي وأطباق",
+      "icon": "🔥",
+      "img": "public/imgs/grill-banner.jpeg"
+    },
+    {
+      "id": "m4",
+      "name": "مشروبات",
+      "icon": "🥤",
+      "img": "public/imgs/drinks-banner.jpeg"
+    },
+    {
+      "id": "m5",
+      "name": "مقبلات",
+      "icon": "🥗",
+      "img": "public/imgs/starters-banner.jpeg"
+    }
   ],
   "items": [
     {
@@ -60,33 +90,6 @@
       "price": 20,
       "menuId": "m1",
       "img": "public/imgs/شاورما عادي.jpeg",
-      "badge": ""
-    },
-    {
-      "id": "i19",
-      "name": "فينو شاورما",
-      "desc": "شاورما دجاج شهية في خبز الفينو الطازج والناعم مع البطاطس والثوم",
-      "price": 22,
-      "menuId": "m1",
-      "img": "public/imgs/فينو شاورما.jpeg",
-      "badge": ""
-    },
-    {
-      "id": "i19",
-      "name": "فينو شاورما",
-      "desc": "شاورما دجاج شهية في خبز الفينو الطازج والناعم مع البطاطس والثوم",
-      "price": 22,
-      "menuId": "m1",
-      "img": "public/imgs/فينو شاورما.jpeg",
-      "badge": ""
-    },
-    {
-      "id": "i19",
-      "name": "فينو شاورما",
-      "desc": "شاورما دجاج شهية في خبز الفينو الطازج والناعم مع البطاطس والثوم",
-      "price": 22,
-      "menuId": "m1",
-      "img": "public/imgs/فينو شاورما.jpeg",
       "badge": ""
     },
     {
@@ -147,8 +150,8 @@
       "id": "i26",
       "name": "اساور",
       "desc": "",
-      "price": 10,
-      "menuId": "m5",
+      "price": 30,
+      "menuId": "m6",
       "img": "public/imgs/اساور.jpeg",
       "badge": ""
     },
@@ -157,7 +160,7 @@
       "name": "صحن شاورما وقية  و نص كيلو و كيلو",
       "desc": "",
       "price": 10,
-      "menuId": "m5",
+      "menuId": "m1",
       "img": "public/imgs/صحن شاورما وقية  و نص كيلو و كيلو.jpeg",
       "badge": ""
     },
@@ -166,8 +169,8 @@
       "name": "صفيهة",
       "desc": "",
       "price": 10,
-      "menuId": "m5",
-      "img": "public/imgs/صفيهة.jpeg",
+      "menuId": "m6",
+      "img": "public/imgs/ØµÙÙØ­Ø©.jpeg",
       "badge": ""
     },
     {
@@ -175,8 +178,44 @@
       "name": "وجبة شاورما صغيرة",
       "desc": "",
       "price": 10,
-      "menuId": "m5",
+      "menuId": "m6",
       "img": "public/imgs/وجبة شاورما صغيرة.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i30",
+      "name": "شاورما دجاج سبيشال",
+      "desc": "شاورما دجاج مع صوص سبيشال وسلطة طازجة",
+      "price": 30,
+      "menuId": "m1",
+      "img": "public/imgs/Ø´Ø§ÙØ±ÙØ§ Ø¯Ø¨Ù Ø¯Ø¨Ù.jpeg",
+      "badge": "الأكثر طلباً"
+    },
+    {
+      "id": "i32",
+      "name": "وجبة كباب مشكل",
+      "desc": "صحن مشكل من الكباب مع مقبلات وسلطة",
+      "price": 50,
+      "menuId": "m3",
+      "img": "public/imgs/ÙØ¬Ø¨Ø© ÙØ´Ø§ÙÙ.jpeg",
+      "badge": "مميز"
+    },
+    {
+      "id": "i1779727827530",
+      "name": "كولا",
+      "desc": "",
+      "price": 4,
+      "menuId": "m4",
+      "img": "public/imgs/ÙÙÙØ§.jpg",
+      "badge": ""
+    },
+    {
+      "id": "i1779728285663",
+      "name": "كيلو كباب",
+      "desc": "",
+      "price": 70,
+      "menuId": "m1",
+      "img": "public/imgs/ÙÙÙÙ ÙØ¨Ø§Ø¨.jpeg",
       "badge": ""
     }
   ]

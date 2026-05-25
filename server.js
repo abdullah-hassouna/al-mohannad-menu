@@ -22,13 +22,16 @@ if (!fs.existsSync(UPLOADS_DIR)) {
 app.use(express.static(__dirname));
 
 // Configure multer for file uploading
+const crypto = require('crypto');
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, UPLOADS_DIR);
   },
   filename: function (req, file, cb) {
-    // Keep the original filename (supports Arabic names) so data.json paths stay consistent
-    cb(null, file.originalname);
+    // Generate a safe, unique filename: timestamp + random hex + original extension
+    const ext = path.extname(file.originalname) || '';
+    const name = Date.now() + '-' + crypto.randomBytes(6).toString('hex') + ext;
+    cb(null, name);
   }
 });
 
@@ -43,10 +46,36 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
-    // Return path relative to project root
-    const relativePath = `public/imgs/${req.file.filename}`;
+    
+    let finalFilename = req.file.filename; // default: generated safe name
+    
+    // If client provided a desired filename, use it
+    if (req.body.filename) {
+      const ext = path.extname(req.file.filename) || '';
+      // Sanitize the provided filename
+      const baseName = req.body.filename
+        .replace(/^.*[\\/]/, '') // remove directory path
+        .replace(/\.[^/.]+$/, ''); // remove extension
+      finalFilename = baseName + ext;
+    }
+    
+    // If the filename changed, rename the file
+    if (finalFilename !== req.file.filename) {
+      const oldPath = path.join(UPLOADS_DIR, req.file.filename);
+      const newPath = path.join(UPLOADS_DIR, finalFilename);
+      try {
+        fs.renameSync(oldPath, newPath);
+        console.log(`✓ Renamed: ${req.file.filename} → ${finalFilename}`);
+      } catch (err) {
+        console.error('Rename failed, using generated name:', err);
+        finalFilename = req.file.filename;
+      }
+    }
+    
+    const relativePath = `public/imgs/${finalFilename}`;
+    const urlPath = '/' + relativePath;
     console.log(`✓ Image uploaded and saved to: ${relativePath}`);
-    res.json({ path: relativePath });
+    res.json({ path: relativePath, url: urlPath });
   } catch (err) {
     console.error('Upload error:', err);
     res.status(500).json({ error: 'Failed to upload image' });
@@ -56,15 +85,20 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
 // Endpoint: Save state to data.json
 app.post('/api/save', (req, res) => {
   try {
+    console.log('📥 Received /api/save request');
+    console.log('Body size:', JSON.stringify(req.body).length, 'bytes');
+    
     const dataPath = path.join(__dirname, 'data.json');
     const dataString = JSON.stringify(req.body, null, 2);
     
+    // Write file synchronously to ensure it completes before responding
     fs.writeFileSync(dataPath, dataString, 'utf8');
-    console.log('✓ Database state saved to data.json');
-    res.json({ success: true });
+    console.log('✓ Database state saved to data.json successfully');
+    
+    res.json({ success: true, message: 'Data saved to data.json' });
   } catch (err) {
-    console.error('Save state error:', err);
-    res.status(500).json({ error: 'Failed to save state to data.json' });
+    console.error('❌ Save state error:', err);
+    res.status(500).json({ success: false, error: err.message });
   }
 });
 

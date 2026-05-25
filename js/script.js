@@ -55,36 +55,53 @@
   /* ─ load/save ─ */
   async function loadState() {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        S = JSON.parse(raw);
-        return;
-      }
-    } catch (e) {
-      console.warn("LocalStorage load failed, fetching data.json:", e);
-    }
-
-    // Fetch from data.json
-    try {
-      const res = await fetch("data.json");
+      // Load from server data.json
+      const res = await fetch("data.json?t=" + Date.now());
       if (res.ok) {
         S = await res.json();
-        saveState();
+        console.log('✓ State loaded from server data.json');
         return;
       }
     } catch (e) {
-      console.error("Failed to fetch data.json:", e);
+      console.error("Failed to fetch data.json from server:", e);
     }
 
-    // Backup state
+    // Fallback to default state
     S = JSON.parse(JSON.stringify(DEFAULT_STATE));
   }
+
   function saveState() {
     try {
-      showSync("synced", "تم الحفظ ✓");
-      setTimeout(() => showSync("idle"), 2000);
+      // Save to server only (no localStorage)
+      const stateStr = JSON.stringify(S);
+      console.log('📤 Sending save request to /api/save...');
+      showSync('syncing', 'جارٍ الحفظ على السيرفر...');
+      
+      fetch('/api/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: stateStr,
+      })
+      .then(res => {
+        console.log('Server response status:', res.status);
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status} ${res.statusText}`);
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log('✓ Server save successful:', data);
+        showSync('synced', 'تم الحفظ ✓');
+        setTimeout(() => showSync('idle'), 2000);
+      })
+      .catch(err => {
+        console.error('❌ Save to server failed:', err);
+        showSync('error', 'فشل الحفظ على السيرفر');
+        setTimeout(() => showSync('idle'), 3000);
+      });
     } catch (e) {
-      showSync("error", "فشل الحفظ — المساحة ممتلئة");
+      console.error('❌ Save state error:', e);
+      showSync('error', 'فشل الحفظ — حدث خطأ');
     }
   }
   function showSync(status, msg) {
@@ -362,9 +379,12 @@
   /* ════════════════════════════════
    6. IMAGE UPLOAD & PREVIEW HELPER
    ════════════════════════════════ */
-  async function uploadImageToServer(file) {
+  async function uploadImageToServer(file, desiredFilename) {
     const formData = new FormData();
     formData.append("image", file);
+    if (desiredFilename) {
+      formData.append("filename", desiredFilename);
+    }
     try {
       const res = await fetch("/api/upload", {
         method: "POST",
@@ -372,7 +392,13 @@
       });
       if (!res.ok) throw new Error("Upload failed");
       const data = await res.json();
-      return data.url; // Vercel Blob returns "url" field
+      // Support multiple possible response shapes for compatibility
+      // Return path without leading slash to match items in data.json (e.g., "public/imgs/...")
+      let path = data.url || data.path;
+      if (!path) return null;
+      // Normalize: remove leading slash if present
+      if (path.startsWith("/")) path = path.slice(1);
+      return path;
     } catch (err) {
       console.error("Image upload error:", err);
       showToast("❌ فشل رفع الصورة إلى السيرفر", "error");
@@ -393,7 +419,7 @@
         p.style.display = "block";
       }
 
-      // Upload to server
+      // Upload to server (no desired filename for generic uploads)
       showToast("⏳ جاري رفع الصورة...", "info", 10000);
       const serverPath = await uploadImageToServer(f);
       if (serverPath) {
@@ -404,11 +430,6 @@
       }
     });
   }
-  bindImgInput("menuImgFile", "menuImgPrev", "_menuImg");
-  bindImgInput("iImgFile", "iImgPrev", "_addImg");
-  bindImgInput("eImgFile", "eImgPrev", "_editImg");
-  bindImgInput("eMImgFile", "eMImgPrev", "_editMenuImg");
-
   /* ════════════════════════════════
    7. ADMIN TABS
    ════════════════════════════════ */
@@ -518,6 +539,42 @@
     showToast("✅ تم إضافة القائمة!");
   });
 
+  // Set up menu image upload with desired filename
+  const menuImgFileInput = document.getElementById("menuImgFile");
+  if (menuImgFileInput) {
+    menuImgFileInput.addEventListener("change", async function() {
+      const f = this.files[0];
+      if (!f) return;
+      
+      const localUrl = URL.createObjectURL(f);
+      const p = document.getElementById("menuImgPrev");
+      if (p) {
+        p.src = localUrl;
+        p.style.display = "block";
+      }
+      
+      // Determine desired filename: use newMImgPath if provided, else use menu name
+      let desiredFilename = document.getElementById("newMImgPath").value.trim();
+      if (!desiredFilename) {
+        const menuName = document.getElementById("newMName").value.trim();
+        if (menuName) {
+          const ext = f.name.split('.').pop() || 'jpeg';
+          desiredFilename = `public/imgs/${menuName}-banner.${ext}`;
+        }
+      }
+      
+      showToast("⏳ جاري رفع صورة الغلاف...", "info", 10000);
+      const serverPath = await uploadImageToServer(f, desiredFilename);
+      if (serverPath) {
+        imgBuf._menuImg = serverPath;
+        document.getElementById("newMImgPath").value = serverPath;
+        showToast("✅ تم رفع صورة الغلاف بنجاح!");
+      } else {
+        imgBuf._menuImg = null;
+      }
+    });
+  }
+
   /* delegated menu actions */
   document.getElementById("menusList").addEventListener("click", (e) => {
     const btn = e.target.closest("[data-action]");
@@ -555,6 +612,39 @@
       prev.style.display = "none";
     }
     document.getElementById("eMImgFile").value = "";
+    
+    // Set up edit menu image upload with desired filename
+    const eMImgFileInput = document.getElementById("eMImgFile");
+    eMImgFileInput.onchange = async function() {
+      const f = this.files[0];
+      if (!f) return;
+      
+      const localUrl = URL.createObjectURL(f);
+      const p = document.getElementById("eMImgPrev");
+      if (p) {
+        p.src = localUrl;
+        p.style.display = "block";
+      }
+      
+      // Determine desired filename: use eMImgPath if provided, else use menu name
+      let desiredFilename = document.getElementById("eMImgPath").value.trim();
+      if (!desiredFilename) {
+        const menuName = document.getElementById("eMName").value.trim() || m.name;
+        const ext = f.name.split('.').pop() || 'jpeg';
+        desiredFilename = `public/imgs/${menuName}-banner.${ext}`;
+      }
+      
+      showToast("⏳ جاري رفع صورة الغلاف...", "info", 10000);
+      const serverPath = await uploadImageToServer(f, desiredFilename);
+      if (serverPath) {
+        imgBuf._editMenuImg = serverPath;
+        document.getElementById("eMImgPath").value = serverPath;
+        showToast("✅ تم رفع صورة الغلاف بنجاح!");
+      } else {
+        imgBuf._editMenuImg = null;
+      }
+    };
+    
     closeOv("adminOv");
     openOv("editMenuOv");
   }
@@ -673,6 +763,41 @@
     imgBuf._addImg = null;
   }
 
+  // Set up add item image upload with desired filename
+  const iImgFileInput = document.getElementById("iImgFile");
+  if (iImgFileInput) {
+    iImgFileInput.addEventListener("change", async function() {
+      const f = this.files[0];
+      if (!f) return;
+      
+      const localUrl = URL.createObjectURL(f);
+      const p = document.getElementById("iImgPrev");
+      if (p) {
+        p.src = localUrl;
+        p.style.display = "block";
+      }
+      
+      // Determine desired filename: use iImgPath if provided, else use item name
+      let desiredFilename = document.getElementById("iImgPath").value.trim();
+      if (!desiredFilename) {
+        const itemName = document.getElementById("iName").value.trim();
+        if (itemName) {
+          const ext = f.name.split('.').pop() || 'jpeg';
+          desiredFilename = `public/imgs/${itemName}.${ext}`;
+        }
+      }
+      
+      showToast("⏳ جاري رفع الصورة...", "info", 10000);
+      const serverPath = await uploadImageToServer(f, desiredFilename);
+      if (serverPath) {
+        imgBuf._addImg = serverPath;
+        document.getElementById("iImgPath").value = serverPath;
+        showToast("✅ تم رفع الصورة بنجاح!");
+      } else {
+        imgBuf._addImg = null;
+      }
+    });
+  }
   function delItem(id) {
     if (!confirm("حذف هذا الصنف نهائياً؟")) return;
     S.items = S.items.filter((i) => i.id !== id);
@@ -702,6 +827,42 @@
       prev.style.display = "none";
     }
     document.getElementById("eImgFile").value = "";
+    
+    // Set up image upload with desired filename from path or item name
+    const eImgFileInput = document.getElementById("eImgFile");
+    eImgFileInput.onchange = async function() {
+      const f = this.files[0];
+      if (!f) return;
+      
+      // Show local preview immediately
+      const localUrl = URL.createObjectURL(f);
+      const p = document.getElementById("eImgPrev");
+      if (p) {
+        p.src = localUrl;
+        p.style.display = "block";
+      }
+      
+      // Determine desired filename: use eImgPath if provided, else use item name
+      let desiredFilename = document.getElementById("eImgPath").value.trim();
+      if (!desiredFilename) {
+        // Generate from item name: sanitize and add extension
+        const itemName = document.getElementById("eName").value.trim() || it.name;
+        const ext = f.name.split('.').pop() || 'jpeg';
+        desiredFilename = `public/imgs/${itemName}.${ext}`;
+      }
+      
+      showToast("⏳ جاري رفع الصورة...", "info", 10000);
+      const serverPath = await uploadImageToServer(f, desiredFilename);
+      if (serverPath) {
+        imgBuf._editImg = serverPath;
+        // Also update the eImgPath field to show what was saved
+        document.getElementById("eImgPath").value = serverPath;
+        showToast("✅ تم رفع الصورة بنجاح!");
+      } else {
+        imgBuf._editImg = null;
+      }
+    };
+    
     closeOv("adminOv");
     openOv("editOv");
   }
@@ -785,14 +946,26 @@
   document.getElementById("logoFile").addEventListener("change", function () {
     const f = this.files[0];
     if (!f) return;
-    const r = new FileReader();
-    r.onload = (ev) => {
-      S.logo = ev.target.result;
-      saveState();
-      render();
-      showToast("✅ تم رفع الشعار!");
-    };
-    r.readAsDataURL(f);
+    // show immediate preview while uploading
+    const imgEl = document.getElementById('logoImg');
+    if (imgEl) {
+      imgEl.src = URL.createObjectURL(f);
+      imgEl.style.display = 'block';
+    }
+    showToast('⏳ جاري رفع الشعار...', 'info');
+    (async () => {
+      const ext = f.name.split('.').pop() || 'png';
+      const desiredFilename = `public/imgs/logo.${ext}`;
+      const serverPath = await uploadImageToServer(f, desiredFilename);
+      if (serverPath) {
+        S.logo = serverPath;
+        saveState();
+        render();
+        showToast('✅ تم رفع الشعار!');
+      } else {
+        showToast('❌ فشل رفع الشعار', 'error');
+      }
+    })();
   });
 
   document.getElementById("saveLogoPathBtn")?.addEventListener("click", () => {
@@ -954,12 +1127,13 @@
     const correctHash = await hashPassword("0598126212");
     console.log("✓ Correct hash for password:", correctHash);
     if (S.pw !== correctHash) {
-      console.warn("⚠ Password hash mismatch! Fixing...");
+      console.warn("⚠ Password hash mismatch! Setting correct hash...");
       S.pw = correctHash;
+      // Save to server immediately
       saveState();
     }
 
-    /* Pre-fill default restaurant socials if they are empty, unassigned, or set to developer links by mistake */
+    /* Pre-fill default restaurant socials if they are empty */
     if (
       !S.socials ||
       !S.socials.fb ||
@@ -971,6 +1145,7 @@
         ig: "https://www.instagram.com/mohanad_resturant/",
         wa: "972593311135",
       };
+      // Save to server
       saveState();
     }
 
