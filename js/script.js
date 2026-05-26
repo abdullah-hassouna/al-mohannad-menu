@@ -140,7 +140,7 @@
     renderLogo();
     renderSocials();
     renderWhatsAppFloat();
-    renderWatermark();
+    // renderWatermark();
     updateFavicon();
     renderHeroText();
   }
@@ -254,9 +254,6 @@
         img.src = S.logo;
         img.style.display = "block";
         em.style.display = "none";
-      } else {
-        img.style.display = "none";
-        em.style.display = "block";
       }
     }
 

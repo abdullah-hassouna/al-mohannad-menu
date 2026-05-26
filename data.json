@@ -10,22 +10,10 @@
   },
   "menus": [
     {
-      "id": "m1",
-      "name": "شاورما",
-      "icon": "🍗",
-      "img": "public/imgs/shawarma-banner.jpeg"
-    },
-    {
-      "id": "m2",
-      "name": "شاورما لحم",
-      "icon": "🥩",
-      "img": "public/imgs/beef-shawarma-banner.jpeg"
-    },
-    {
       "id": "m6",
       "name": "وجبات",
       "icon": "🍖",
-      "img": "public/imgs/meals-banner.jpeg"
+      "img": "public/imgs/meals-banner.JPG"
     },
     {
       "id": "m3",
@@ -37,13 +25,25 @@
       "id": "m4",
       "name": "مشروبات",
       "icon": "🥤",
-      "img": "public/imgs/drinks-banner.jpeg"
+      "img": "public/imgs/drinks-banner.jpg"
     },
     {
       "id": "m5",
       "name": "مقبلات",
       "icon": "🥗",
       "img": "public/imgs/starters-banner.jpeg"
+    },
+    {
+      "id": "m1779775752072",
+      "name": "صواني",
+      "icon": "🍽",
+      "img": "public/imgs/صواني-banner.jpeg"
+    },
+    {
+      "id": "m1779775948714",
+      "name": "فراشيح",
+      "icon": "🌯",
+      "img": "public/imgs/فراشيح-banner.jpg"
     }
   ],
   "items": [
@@ -52,7 +52,7 @@
       "name": "شاورما دبل دبل",
       "desc": "شاورما دبل دبل مميزة بخبز الصاج المحمص على الفحم مع صوص الثوم والبطاطس",
       "price": 32,
-      "menuId": "m1",
+      "menuId": "m1779775948714",
       "img": "public/imgs/شاورما دبل دبل.jpeg",
       "badge": "مميز"
     },
@@ -61,7 +61,7 @@
       "name": "شاورما دبل عادي",
       "desc": "وجبة شاورما دبل حجم عادي مع الثومية اللذيذة والمخلل المقرمش",
       "price": 22,
-      "menuId": "m1",
+      "menuId": "m1779775948714",
       "img": "public/imgs/شاورما دبل عادي.jpeg",
       "badge": ""
     },
@@ -70,7 +70,7 @@
       "name": "شاورما صاروخ",
       "desc": "ساندويتش شاورما صاروخ كبير شهي مع صوص شاورما المهند الخاص",
       "price": 35,
-      "menuId": "m1",
+      "menuId": "m1779775948714",
       "img": "public/imgs/شاورما صاروخ.jpeg",
       "badge": "الأكثر طلباً"
     },
@@ -79,7 +79,7 @@
       "name": "شاورما عادي بالجبنة",
       "desc": "ساندويتش شاورما دجاج عادي غني بالجبنة المذوبة اللذيذة",
       "price": 25,
-      "menuId": "m1",
+      "menuId": "m1779775948714",
       "img": "public/imgs/شاورما عادي بالجبنة.jpeg",
       "badge": "جديد"
     },
@@ -88,7 +88,7 @@
       "name": "شاورما عادي",
       "desc": "ساندويتش شاورما عادي دجاج مشوي بالتوابل الأصيلة مع الثوم",
       "price": 20,
-      "menuId": "m1",
+      "menuId": "m1779775948714",
       "img": "public/imgs/شاورما عادي.jpeg",
       "badge": ""
     },
@@ -148,18 +148,18 @@
     },
     {
       "id": "i27",
-      "name": "صحن شاورما وقية  و نص كيلو و كيلو",
+      "name": "صحن شاورما وقية",
       "desc": "",
-      "price": 10,
-      "menuId": "m1",
+      "price": 40,
+      "menuId": "m1779775752072",
       "img": "public/imgs/صحن شاورما وقية  و نص كيلو و كيلو.jpeg",
       "badge": ""
     },
     {
       "id": "i28",
       "name": "صفيهة",
-      "desc": "",
-      "price": 10,
+      "desc": "صفيحة شاورما + شيبس + صحن مايونيز + مخاا",
+      "price": 40,
       "menuId": "m6",
       "img": "public/imgs/ØµÙÙØ­Ø©.jpeg",
       "badge": ""
@@ -167,8 +167,8 @@
     {
       "id": "i29",
       "name": "وجبة شاورما صغيرة",
-      "desc": "",
-      "price": 10,
+      "desc": "صحن شاورما صغير + شيبس + صحن مايونيز",
+      "price": 40.5,
       "menuId": "m6",
       "img": "public/imgs/وجبة شاورما صغيرة.jpeg",
       "badge": ""
@@ -196,7 +196,7 @@
       "name": "كيلو كباب",
       "desc": "",
       "price": 70,
-      "menuId": "m1",
+      "menuId": "m3",
       "img": "public/imgs/ÙÙÙÙ ÙØ¨Ø§Ø¨.jpeg",
       "badge": ""
     },
@@ -214,7 +214,7 @@
       "name": "فرشوحة كباب",
       "desc": "",
       "price": 15,
-      "menuId": "m1",
+      "menuId": "m3",
       "img": "public/imgs/ÙØ±Ø´ÙØ­Ø© ÙØ¨Ø§Ø¨.jpeg",
       "badge": ""
     },
@@ -223,8 +223,8 @@
       "name": "فرشوحة شيش",
       "desc": "",
       "price": 15,
-      "menuId": "m1",
-      "img": "public/imgs/ÙÙÙÙ ÙØ¨Ø§Ø¨.jpeg",
+      "menuId": "m3",
+      "img": "public/imgs/ÙÙÙÙ ÙØ¨Ø§Ø¨.jpg",
       "badge": ""
     },
     {
@@ -232,17 +232,98 @@
       "name": "فرشوحة دبل لحمة",
       "desc": "",
       "price": 30,
-      "menuId": "m1",
+      "menuId": "m1779775948714",
       "img": "public/imgs/ÙØ±Ø´ÙØ­Ø© ÙØ¨Ø§Ø¨.jpeg",
       "badge": ""
     },
     {
       "id": "i17799995663",
       "name": "وجبة سوري",
-      "desc": "",
+      "desc": "فرشوحة سوري + شيبس + صحن مايونيز _ مخلل",
       "price": 35,
       "menuId": "m6",
       "img": "public/imgs/Ø³ÙØ±Ù.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i1779774880132",
+      "name": "فينو شاورما",
+      "desc": "",
+      "price": 10,
+      "menuId": "m1779775948714",
+      "img": "public/imgs/1779774878079-67907f97e33b.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i1779775012468",
+      "name": "سلطة سخنة",
+      "desc": "",
+      "price": 10,
+      "menuId": "m5",
+      "img": "public/imgs/1779775011011-1e752c514b6b.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i1779775114673",
+      "name": "صحن شاورما حبش",
+      "desc": "",
+      "price": 0,
+      "menuId": "m6",
+      "img": "public/imgs/1779775097689-192aea7c7639.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i1779775194139",
+      "name": "وجبة لشخصين",
+      "desc": "صحن شاورما + شيبس + صحن مايونيز",
+      "price": 80,
+      "menuId": "m6",
+      "img": "public/imgs/1779775184578-13f64885bf3c.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i1779775242107",
+      "name": "وجبة أساور",
+      "desc": "شيبس + صحن مايونيز + مخلل",
+      "price": 40,
+      "menuId": "m6",
+      "img": "public/imgs/1779775235084-4299afa51f40.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i1779775375104",
+      "name": "وجبة مسحب",
+      "desc": "",
+      "price": 40,
+      "menuId": "m6",
+      "img": "public/imgs/وجبة مسحب.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i1779775672487",
+      "name": "صحن شاورما",
+      "desc": "",
+      "price": 80,
+      "menuId": "m1779775752072",
+      "img": "public/imgs/صحن شاورما.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i1779775719999",
+      "name": "صحن شاورما كيلو",
+      "desc": "",
+      "price": 160,
+      "menuId": "m1779775752072",
+      "img": "public/imgs/صحن شاورما كيلو.jpeg",
+      "badge": ""
+    },
+    {
+      "id": "i1779775891279",
+      "name": "كيلو شيش",
+      "desc": "",
+      "price": 80,
+      "menuId": "m3",
+      "img": "public/imgs/كيلو شيش.jpeg",
       "badge": ""
     }
   ]

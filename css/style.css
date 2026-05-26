@@ -39,6 +39,9 @@ body {
   color: var(--char);
   direction: rtl;
   overflow-x: hidden;
+  background-size: cover;
+  background-image: url("/public/imgs/bg.png");
+  background-repeat: no-repeat;
 }
 
 /* ═══════════════ ANIMATIONS ═══════════════ */
@@ -362,12 +365,9 @@ body {
 
 /* ═══════════════ HERO ═══════════════ */
 .hero {
-  background: linear-gradient(
-    155deg,
-    var(--amber-deep) 0%,
-    var(--amber-dark) 50%,
-    #b91c1c 100%
-  );
+  background-image: url("/public/imgs/banner.png");
+  background-repeat: no-repeat;
+  background-size: cover;
   min-height: clamp(260px, 40vw, 360px);
   position: relative;
   overflow: hidden;
@@ -384,44 +384,15 @@ body {
   inset: 0;
   pointer-events: none;
 }
-.hero-circle {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.055);
-}
-.hero-circle:nth-child(1) {
-  width: clamp(200px, 40vw, 420px);
-  height: clamp(200px, 40vw, 420px);
-  top: -30%;
-  right: -10%;
-  animation: float 6s ease-in-out infinite;
-}
-.hero-circle:nth-child(2) {
-  width: clamp(130px, 20vw, 220px);
-  height: clamp(130px, 20vw, 220px);
-  bottom: -15%;
-  left: -8%;
-  animation: float 8s ease-in-out infinite 1s;
-}
-.hero-circle:nth-child(3) {
-  width: clamp(70px, 12vw, 140px);
-  height: clamp(70px, 12vw, 140px);
-  top: 15%;
-  left: 28%;
-  animation: float 5s ease-in-out infinite 0.5s;
-}
 /* decorative spice dots */
 .hero-bg::before {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(
-    rgba(255, 180, 180, 0.12) 1.5px,
-    transparent 1.5px
-  );
+  background-image: url("imgs/banner.png");
   background-size: 30px 30px;
 }
-.hero-watermark {
+/* .hero-watermark {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -435,20 +406,20 @@ body {
   align-items: center;
   justify-content: center;
   animation: float 9s ease-in-out infinite;
-}
-.hero-watermark img {
+} */
+/* .hero-watermark img {
   width: 100%;
   height: 100%;
   object-fit: contain;
   filter: brightness(0) invert(1);
   display: none;
-}
-.hero-watermark span {
+} */
+/* .hero-watermark span {
   font-size: clamp(110px, 26vw, 220px);
   line-height: 1;
   filter: grayscale(1) brightness(2);
   display: block;
-}
+} */
 .logo-wrap {
   width: clamp(120px, 14.5vw, 155px);
   height: clamp(120px, 14.5vw, 155px);
