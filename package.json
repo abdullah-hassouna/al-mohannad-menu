@@ -4,6 +4,7 @@
   "description": "Shawarma Almohannad digital menu with dynamic JSON database and image uploads",
   "main": "server.js",
   "scripts": {
+    "build": "echo 'No build step needed'",
     "start": "node server.js",
     "dev": "node server.js"
   },
