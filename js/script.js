@@ -59,7 +59,7 @@
       const res = await fetch("data.json?t=" + Date.now());
       if (res.ok) {
         S = await res.json();
-        console.log('✓ State loaded from server data.json');
+        console.log("✓ State loaded from server data.json");
         return;
       }
     } catch (e) {
@@ -74,34 +74,34 @@
     try {
       // Save to server only (no localStorage)
       const stateStr = JSON.stringify(S);
-      console.log('📤 Sending save request to /api/save...');
-      showSync('syncing', 'جارٍ الحفظ على السيرفر...');
-      
-      fetch('/api/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      console.log("📤 Sending save request to /api/save...");
+      showSync("syncing", "جارٍ الحفظ على السيرفر...");
+
+      fetch("/api/save", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: stateStr,
       })
-      .then(res => {
-        console.log('Server response status:', res.status);
-        if (!res.ok) {
-          throw new Error(`Server error: ${res.status} ${res.statusText}`);
-        }
-        return res.json();
-      })
-      .then(data => {
-        console.log('✓ Server save successful:', data);
-        showSync('synced', 'تم الحفظ ✓');
-        setTimeout(() => showSync('idle'), 2000);
-      })
-      .catch(err => {
-        console.error('❌ Save to server failed:', err);
-        showSync('error', 'فشل الحفظ على السيرفر');
-        setTimeout(() => showSync('idle'), 3000);
-      });
+        .then((res) => {
+          console.log("Server response status:", res.status);
+          if (!res.ok) {
+            throw new Error(`Server error: ${res.status} ${res.statusText}`);
+          }
+          return res.json();
+        })
+        .then((data) => {
+          console.log("✓ Server save successful:", data);
+          showSync("synced", "تم الحفظ ✓");
+          setTimeout(() => showSync("idle"), 2000);
+        })
+        .catch((err) => {
+          console.error("❌ Save to server failed:", err);
+          showSync("error", "فشل الحفظ على السيرفر");
+          setTimeout(() => showSync("idle"), 3000);
+        });
     } catch (e) {
-      console.error('❌ Save state error:', e);
-      showSync('error', 'فشل الحفظ — حدث خطأ');
+      console.error("❌ Save state error:", e);
+      showSync("error", "فشل الحفظ — حدث خطأ");
     }
   }
   function showSync(status, msg) {
@@ -407,28 +407,30 @@
   }
 
   function bindImgInput(inputId, prevId, bufKey) {
-    document.getElementById(inputId)?.addEventListener("change", async function () {
-      const f = this.files[0];
-      if (!f) return;
+    document
+      .getElementById(inputId)
+      ?.addEventListener("change", async function () {
+        const f = this.files[0];
+        if (!f) return;
 
-      // Show a local preview immediately
-      const localUrl = URL.createObjectURL(f);
-      const p = document.getElementById(prevId);
-      if (p) {
-        p.src = localUrl;
-        p.style.display = "block";
-      }
+        // Show a local preview immediately
+        const localUrl = URL.createObjectURL(f);
+        const p = document.getElementById(prevId);
+        if (p) {
+          p.src = localUrl;
+          p.style.display = "block";
+        }
 
-      // Upload to server (no desired filename for generic uploads)
-      showToast("⏳ جاري رفع الصورة...", "info", 10000);
-      const serverPath = await uploadImageToServer(f);
-      if (serverPath) {
-        imgBuf[bufKey] = serverPath;
-        showToast("✅ تم رفع الصورة بنجاح!");
-      } else {
-        imgBuf[bufKey] = null;
-      }
-    });
+        // Upload to server (no desired filename for generic uploads)
+        showToast("⏳ جاري رفع الصورة...", "info", 10000);
+        const serverPath = await uploadImageToServer(f);
+        if (serverPath) {
+          imgBuf[bufKey] = serverPath;
+          showToast("✅ تم رفع الصورة بنجاح!");
+        } else {
+          imgBuf[bufKey] = null;
+        }
+      });
   }
   /* ════════════════════════════════
    7. ADMIN TABS
@@ -542,27 +544,27 @@
   // Set up menu image upload with desired filename
   const menuImgFileInput = document.getElementById("menuImgFile");
   if (menuImgFileInput) {
-    menuImgFileInput.addEventListener("change", async function() {
+    menuImgFileInput.addEventListener("change", async function () {
       const f = this.files[0];
       if (!f) return;
-      
+
       const localUrl = URL.createObjectURL(f);
       const p = document.getElementById("menuImgPrev");
       if (p) {
         p.src = localUrl;
         p.style.display = "block";
       }
-      
+
       // Determine desired filename: use newMImgPath if provided, else use menu name
       let desiredFilename = document.getElementById("newMImgPath").value.trim();
       if (!desiredFilename) {
         const menuName = document.getElementById("newMName").value.trim();
         if (menuName) {
-          const ext = f.name.split('.').pop() || 'jpeg';
+          const ext = f.name.split(".").pop() || "jpeg";
           desiredFilename = `public/imgs/${menuName}-banner.${ext}`;
         }
       }
-      
+
       showToast("⏳ جاري رفع صورة الغلاف...", "info", 10000);
       const serverPath = await uploadImageToServer(f, desiredFilename);
       if (serverPath) {
@@ -612,28 +614,29 @@
       prev.style.display = "none";
     }
     document.getElementById("eMImgFile").value = "";
-    
+
     // Set up edit menu image upload with desired filename
     const eMImgFileInput = document.getElementById("eMImgFile");
-    eMImgFileInput.onchange = async function() {
+    eMImgFileInput.onchange = async function () {
       const f = this.files[0];
       if (!f) return;
-      
+
       const localUrl = URL.createObjectURL(f);
       const p = document.getElementById("eMImgPrev");
       if (p) {
         p.src = localUrl;
         p.style.display = "block";
       }
-      
+
       // Determine desired filename: use eMImgPath if provided, else use menu name
       let desiredFilename = document.getElementById("eMImgPath").value.trim();
       if (!desiredFilename) {
-        const menuName = document.getElementById("eMName").value.trim() || m.name;
-        const ext = f.name.split('.').pop() || 'jpeg';
+        const menuName =
+          document.getElementById("eMName").value.trim() || m.name;
+        const ext = f.name.split(".").pop() || "jpeg";
         desiredFilename = `public/imgs/${menuName}-banner.${ext}`;
       }
-      
+
       showToast("⏳ جاري رفع صورة الغلاف...", "info", 10000);
       const serverPath = await uploadImageToServer(f, desiredFilename);
       if (serverPath) {
@@ -644,7 +647,7 @@
         imgBuf._editMenuImg = null;
       }
     };
-    
+
     closeOv("adminOv");
     openOv("editMenuOv");
   }
@@ -766,27 +769,27 @@
   // Set up add item image upload with desired filename
   const iImgFileInput = document.getElementById("iImgFile");
   if (iImgFileInput) {
-    iImgFileInput.addEventListener("change", async function() {
+    iImgFileInput.addEventListener("change", async function () {
       const f = this.files[0];
       if (!f) return;
-      
+
       const localUrl = URL.createObjectURL(f);
       const p = document.getElementById("iImgPrev");
       if (p) {
         p.src = localUrl;
         p.style.display = "block";
       }
-      
+
       // Determine desired filename: use iImgPath if provided, else use item name
       let desiredFilename = document.getElementById("iImgPath").value.trim();
       if (!desiredFilename) {
         const itemName = document.getElementById("iName").value.trim();
         if (itemName) {
-          const ext = f.name.split('.').pop() || 'jpeg';
+          const ext = f.name.split(".").pop() || "jpeg";
           desiredFilename = `public/imgs/${itemName}.${ext}`;
         }
       }
-      
+
       showToast("⏳ جاري رفع الصورة...", "info", 10000);
       const serverPath = await uploadImageToServer(f, desiredFilename);
       if (serverPath) {
@@ -827,13 +830,13 @@
       prev.style.display = "none";
     }
     document.getElementById("eImgFile").value = "";
-    
+
     // Set up image upload with desired filename from path or item name
     const eImgFileInput = document.getElementById("eImgFile");
-    eImgFileInput.onchange = async function() {
+    eImgFileInput.onchange = async function () {
       const f = this.files[0];
       if (!f) return;
-      
+
       // Show local preview immediately
       const localUrl = URL.createObjectURL(f);
       const p = document.getElementById("eImgPrev");
@@ -841,16 +844,17 @@
         p.src = localUrl;
         p.style.display = "block";
       }
-      
+
       // Determine desired filename: use eImgPath if provided, else use item name
       let desiredFilename = document.getElementById("eImgPath").value.trim();
       if (!desiredFilename) {
         // Generate from item name: sanitize and add extension
-        const itemName = document.getElementById("eName").value.trim() || it.name;
-        const ext = f.name.split('.').pop() || 'jpeg';
+        const itemName =
+          document.getElementById("eName").value.trim() || it.name;
+        const ext = f.name.split(".").pop() || "jpeg";
         desiredFilename = `public/imgs/${itemName}.${ext}`;
       }
-      
+
       showToast("⏳ جاري رفع الصورة...", "info", 10000);
       const serverPath = await uploadImageToServer(f, desiredFilename);
       if (serverPath) {
@@ -862,7 +866,7 @@
         imgBuf._editImg = null;
       }
     };
-    
+
     closeOv("adminOv");
     openOv("editOv");
   }
@@ -947,23 +951,23 @@
     const f = this.files[0];
     if (!f) return;
     // show immediate preview while uploading
-    const imgEl = document.getElementById('logoImg');
+    const imgEl = document.getElementById("logoImg");
     if (imgEl) {
       imgEl.src = URL.createObjectURL(f);
-      imgEl.style.display = 'block';
+      imgEl.style.display = "block";
     }
-    showToast('⏳ جاري رفع الشعار...', 'info');
+    showToast("⏳ جاري رفع الشعار...", "info");
     (async () => {
-      const ext = f.name.split('.').pop() || 'png';
+      const ext = f.name.split(".").pop() || "png";
       const desiredFilename = `public/imgs/logo.${ext}`;
       const serverPath = await uploadImageToServer(f, desiredFilename);
       if (serverPath) {
         S.logo = serverPath;
         saveState();
         render();
-        showToast('✅ تم رفع الشعار!');
+        showToast("✅ تم رفع الشعار!");
       } else {
-        showToast('❌ فشل رفع الشعار', 'error');
+        showToast("❌ فشل رفع الشعار", "error");
       }
     })();
   });
