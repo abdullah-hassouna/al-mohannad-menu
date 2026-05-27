@@ -3,6 +3,8 @@ const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
+const { put } = require('@vercel/blob');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -41,41 +43,36 @@ const upload = multer({
 });
 
 // Endpoint: Upload image
-app.post('/api/upload', upload.single('image'), (req, res) => {
+app.post('/api/upload', upload.single('image'), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
     
-    let finalFilename = req.file.filename; // default: generated safe name
-    
-    // If client provided a desired filename, use it
+    let finalFilename = req.file.filename;
     if (req.body.filename) {
       const ext = path.extname(req.file.filename) || '';
-      // Sanitize the provided filename
       const baseName = req.body.filename
-        .replace(/^.*[\\/]/, '') // remove directory path
-        .replace(/\.[^/.]+$/, ''); // remove extension
+        .replace(/^.*[\\/]/, '')
+        .replace(/\.[^/.]+$/, '');
       finalFilename = baseName + ext;
     }
     
-    // If the filename changed, rename the file
-    if (finalFilename !== req.file.filename) {
-      const oldPath = path.join(UPLOADS_DIR, req.file.filename);
-      const newPath = path.join(UPLOADS_DIR, finalFilename);
-      try {
-        fs.renameSync(oldPath, newPath);
-        console.log(`✓ Renamed: ${req.file.filename} → ${finalFilename}`);
-      } catch (err) {
-        console.error('Rename failed, using generated name:', err);
-        finalFilename = req.file.filename;
-      }
+    // Strip public if present
+    if (finalFilename.startsWith('public/')) {
+      finalFilename = finalFilename.substring(7);
     }
-    
-    const relativePath = `public/imgs/${finalFilename}`;
-    const urlPath = '/' + relativePath;
-    console.log(`✓ Image uploaded and saved to: ${relativePath}`);
-    res.json({ path: relativePath, url: urlPath });
+    if (!finalFilename.startsWith('imgs/')) {
+      finalFilename = `imgs/${finalFilename}`;
+    }
+
+    const fileData = fs.readFileSync(req.file.path);
+    const blob = await put(finalFilename, fileData, {
+      access: 'public',
+      addRandomSuffix: false
+    });
+
+    res.json({ path: finalFilename, url: blob.url });
   } catch (err) {
     console.error('Upload error:', err);
     res.status(500).json({ error: 'Failed to upload image' });
@@ -83,19 +80,19 @@ app.post('/api/upload', upload.single('image'), (req, res) => {
 });
 
 // Endpoint: Save state to data.json
-app.post('/api/save', (req, res) => {
+app.post('/api/save', async (req, res) => {
   try {
     console.log('📥 Received /api/save request');
-    console.log('Body size:', JSON.stringify(req.body).length, 'bytes');
-    
-    const dataPath = path.join(__dirname, 'data.json');
     const dataString = JSON.stringify(req.body, null, 2);
     
-    // Write file synchronously to ensure it completes before responding
-    fs.writeFileSync(dataPath, dataString, 'utf8');
-    console.log('✓ Database state saved to data.json successfully');
+    const blob = await put('data.json', dataString, {
+      access: 'public',
+      contentType: 'application/json',
+      addRandomSuffix: false
+    });
     
-    res.json({ success: true, message: 'Data saved to data.json' });
+    console.log('✓ Database state saved to Vercel Blob successfully');
+    res.json({ success: true, url: blob.url });
   } catch (err) {
     console.error('❌ Save state error:', err);
     res.status(500).json({ success: false, error: err.message });
