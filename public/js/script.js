@@ -1,4 +1,26 @@
 // @ts-nocheck
+/* ── VERCEL BLOB CONFIG ── */
+// Replace the placeholder with your actual Vercel Blob base URL (e.g. https://blob.vercel-storage.com/your-bucket)
+const BLOB_BASE_URL = "https://wexfekz29tpucl7z.public.blob.vercel-storage.com";
+const BLOB_DATA_URL = `${BLOB_BASE_URL}/data.json`;
+
+/**
+ * Resolve an image path stored in the state. If the path is already an absolute URL, return it unchanged.
+ * Otherwise, prefix it with the Blob base URL.
+ */
+function resolveImgUrl(path) {
+  if (!path) return "";
+  // Already an absolute URL (http/https) – return as‑is
+  if (/^https?:\/\//i.test(path)) return path;
+  // Ensure no leading slash so that concatenation works correctly
+  let cleaned = path.replace(/^\//, "");
+  // If the path starts with public/ (from local structure), remove it so it points to imgs/ directly on Blob
+  if (cleaned.startsWith("public/")) {
+    cleaned = cleaned.substring(7);
+  }
+  return `${BLOB_BASE_URL}/${cleaned}`;
+}
+
 (function () {
   "use strict";
 
@@ -56,7 +78,7 @@
   async function loadState() {
     try {
       // Load from server data.json
-      const res = await fetch("data.json?t=" + Date.now());
+      const res = await fetch(BLOB_DATA_URL + "?t=" + Date.now());
       if (res.ok) {
         S = await res.json();
         console.log("✓ State loaded from server data.json");
@@ -202,7 +224,7 @@
 
   function renderBanner(m, bg, count) {
     const img = m.img
-      ? `<img class="cat-banner-img" src="${m.img}" alt="${m.name}">`
+      ? `<img class="cat-banner-img" src="${resolveImgUrl(m.img)}" alt="${m.name}">`
       : `<div class="cat-banner-ph" style="background:${bg}"><span style="animation:float 3s ease-in-out infinite;display:block;font-size:5rem">${m.icon}</span></div>`;
     return `<div class="cat-banner">
     ${img}
@@ -229,7 +251,7 @@
     return `<div class="item-card">
     <div class="item-img-wrap">
       ${badge}
-      ${it.img ? `<img class="item-img" src="${it.img}" alt="${it.name}">` : `<div class="item-ph" style="background:${BG_COLORS[S.menus.indexOf(m) % BG_COLORS.length]}">${m.icon}</div>`}
+      ${it.img ? `<img class="item-img" src="${resolveImgUrl(it.img)}" alt="${it.name}">` : `<div class="item-ph" style="background:${BG_COLORS[S.menus.indexOf(m) % BG_COLORS.length]}">${m.icon}</div>`}
     </div>
     <div class="item-body">
       <div class="item-name">${it.name}</div>
@@ -251,7 +273,7 @@
     const em = document.getElementById("logoEmoji");
     if (img && em) {
       if (S.logo) {
-        img.src = S.logo;
+        img.src = resolveImgUrl(S.logo);
         img.style.display = "block";
         em.style.display = "none";
       }
@@ -261,7 +283,7 @@
     const fEm = document.getElementById("footerLogoEmoji");
     if (fImg && fEm) {
       if (S.logo) {
-        fImg.src = S.logo;
+        fImg.src = resolveImgUrl(S.logo);
         fImg.style.display = "block";
         fEm.style.display = "none";
       } else {
@@ -275,7 +297,7 @@
     const wImg = document.getElementById("heroWatermarkImg");
     const wEmoji = document.getElementById("heroWatermarkEmoji");
     if (S.logo) {
-      wImg.src = S.logo;
+      wImg.src = resolveImgUrl(S.logo);
       wImg.style.display = "block";
       wEmoji.style.display = "none";
     } else {
@@ -286,7 +308,7 @@
     const eg = document.getElementById("pageWatermarkEmoji");
     if (!wm) return;
     if (S.logo) {
-      wm.style.setProperty("--wm-url", `url("${S.logo}")`);
+      wm.style.setProperty("--wm-url", `url("${resolveImgUrl(S.logo)}")`);
       eg.style.display = "none";
     } else {
       wm.style.setProperty("--wm-url", "none");
@@ -327,7 +349,7 @@
     const fav = document.getElementById("siteFavicon");
     if (!fav) return;
     if (S.logo) {
-      fav.href = S.logo;
+      fav.href = resolveImgUrl(S.logo);
       return;
     }
     const c = document.createElement("canvas");
@@ -496,7 +518,7 @@
       .map(
         (m) => `
     <div class="litem">
-      <div class="lthumb">${m.img ? `<img src="${m.img}">` : m.icon}</div>
+      <div class="lthumb">${m.img ? `<img src="${resolveImgUrl(m.img)}">` : m.icon}</div>
       <div class="linfo">
         <div class="lname">${m.name}</div>
         <div class="lmeta">${S.items.filter((i) => i.menuId === m.id).length} صنف</div>
@@ -605,7 +627,7 @@
       m.img && !m.img.startsWith("data:") ? m.img : "";
     const prev = document.getElementById("eMImgPrev");
     if (m.img) {
-      prev.src = m.img;
+      prev.src = resolveImgUrl(m.img);
       prev.style.display = m.img.startsWith("data:") ? "block" : "none";
     } else {
       prev.style.display = "none";
@@ -686,7 +708,7 @@
       .map((it) => {
         const m = S.menus.find((x) => x.id === it.menuId);
         return `<div class="litem">
-      <div class="lthumb">${it.img ? `<img src="${it.img}">` : m?.icon || "🌯"}</div>
+      <div class="lthumb">${it.img ? `<img src="${resolveImgUrl(it.img)}">` : m?.icon || "🌯"}</div>
       <div class="linfo">
         <div class="lname">${it.name}</div>
         <div class="lmeta">${m?.name || ""} · ₪${(+it.price).toFixed(1)}${it.badge ? " · " + it.badge : ""}</div>
@@ -821,7 +843,7 @@
     document.getElementById("eMenu").value = it.menuId;
     const prev = document.getElementById("eImgPrev");
     if (it.img) {
-      prev.src = it.img;
+      prev.src = resolveImgUrl(it.img);
       prev.style.display = it.img.startsWith("data:") ? "block" : "none";
     } else {
       prev.style.display = "none";
@@ -1061,7 +1083,7 @@
     )
       return;
     try {
-      const res = await fetch("data.json?t=" + Date.now());
+      const res = await fetch(BLOB_DATA_URL + "?t=" + Date.now());
       if (res.ok) {
         S = await res.json();
         activeMenuId = S.menus?.[0]?.id || null;
