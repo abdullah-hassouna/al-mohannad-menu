@@ -9,29 +9,25 @@ module.exports = async function handler(req, res) {
   try {
     const dataString = JSON.stringify(req.body, null, 2);
 
-    // Step 1: Delete ALL existing data.json blobs
-    const { blobs } = await list({ prefix: "data.json" });
-    console.log(`Found ${blobs.length} existing blob(s)`);
-
-    if (blobs.length > 0) {
-      for (const blob of blobs) {
-        console.log("Deleting:", blob.url);
-        await del(blob.url); // delete one by one, not as array
-      }
-      console.log("✓ All old blobs deleted");
+    // Delete existing data.json if it exists
+    const { blobs } = await list();
+    const existing = blobs.find((b) => b.pathname === "data.json");
+    if (existing) {
+      await del(existing.url);
+      console.log("✓ Deleted old data.json");
     }
 
-    // Step 2: Upload new data.json
+    // Upload the new one
     const blob = await put("data.json", dataString, {
       access: "public",
       contentType: "application/json",
-      allowOverwrite: true,
+      addRandomSuffix: false,
     });
 
     console.log("✓ data.json saved:", blob.url);
     res.status(200).json({ success: true, url: blob.url });
   } catch (error) {
-    console.error("❌ Full error:", error);
+    console.error("❌ Save error:", error);
     res.status(500).json({ success: false, error: error.message });
   }
 };
