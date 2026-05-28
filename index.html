@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>شاورما المهند</title>
+    <title>مطعم مهند</title>
     <link id="siteFavicon" rel="icon" type="image/png" href="" />
     <link
       href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap"
@@ -103,6 +103,34 @@
       </div>
     </header>
     <nav class="nav"><div class="nav-inner" id="navInner"></div></nav>
+    <!-- SEARCH BAR -->
+    <div class="search-wrap" id="searchWrap">
+      <div class="search-inner">
+        <div class="search-box">
+          <svg
+            class="search-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input
+            type="search"
+            id="searchInput"
+            placeholder="ابحث عن وجبة... مثال: شاورما، كباب"
+            autocomplete="off"
+          />
+          <button class="search-clear" id="searchClear" aria-label="مسح البحث">
+            ✕
+          </button>
+        </div>
+      </div>
+    </div>
     <main class="main" id="mainContent"></main>
     <footer class="footer">
       <div class="footer-container">

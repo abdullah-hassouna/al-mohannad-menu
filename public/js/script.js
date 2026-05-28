@@ -143,6 +143,7 @@ function resolveImgUrl(path) {
    ════════════════════════════════ */
   let S = {};
   let activeMenuId = null;
+  let searchQuery = "";
 
   /* image buffer (not persisted as-is — already base64 in state) */
   const imgBuf = {
@@ -158,7 +159,7 @@ function resolveImgUrl(path) {
   function render() {
     if (!activeMenuId && S.menus.length) activeMenuId = S.menus[0].id;
     renderNav();
-    renderSections();
+    renderSearchOrAll();
     renderLogo();
     renderSocials();
     renderWhatsAppFloat();
@@ -185,23 +186,44 @@ function resolveImgUrl(path) {
         '<span style="padding:14px 16px;font-size:.87rem;color:var(--g400)">لا توجد قوائم</span>';
       return;
     }
-    nav.innerHTML = S.menus
-      .map(
-        (m) => `
-    <button class="nav-btn${m.id === activeMenuId ? " active" : ""}" data-menu="${m.id}">
-      <span class="nav-icon">${m.icon}</span> ${m.name}
-    </button>`,
-      )
-      .join("");
+    // All Items tab + individual menus
+    const allActive = activeMenuId === "__all__";
+    nav.innerHTML =
+      `<button class="nav-btn${allActive ? " active" : ""}" data-menu="__all__">
+        <span class="nav-icon">🍽️</span> كل الأصناف
+      </button>` +
+      S.menus
+        .map(
+          (m) => `
+      <button class="nav-btn${m.id === activeMenuId ? " active" : ""}" data-menu="${m.id}">
+        <span class="nav-icon">${m.icon}</span> ${m.name}
+      </button>`,
+        )
+        .join("");
     nav.querySelectorAll(".nav-btn").forEach((btn) => {
       btn.addEventListener("click", () => {
         activeMenuId = btn.dataset.menu;
+        searchQuery = "";
+        const inp = document.getElementById("searchInput");
+        if (inp) inp.value = "";
+        const clr = document.getElementById("searchClear");
+        if (clr) clr.classList.remove("visible");
         render();
         document
           .getElementById("mainContent")
           .scrollIntoView({ behavior: "smooth", block: "start" });
       });
     });
+  }
+
+  function renderSearchOrAll() {
+    if (searchQuery.trim().length > 0) {
+      renderSearchResults();
+    } else if (activeMenuId === "__all__") {
+      renderAllItems();
+    } else {
+      renderSections();
+    }
   }
 
   function renderSections() {
@@ -220,6 +242,51 @@ function resolveImgUrl(path) {
     </div>`;
       })
       .join("");
+  }
+
+  function renderAllItems() {
+    const main = document.getElementById("mainContent");
+    if (!main) return;
+    let html = `<div class="search-results-header">
+      <span class="sr-icon">🍽️</span>
+      <span class="sr-label">كل الأصناف</span>
+      <span class="sr-count">${S.items.length} صنف</span>
+    </div>`;
+    S.menus.forEach((m, mi) => {
+      const items = S.items.filter((i) => i.menuId === m.id);
+      if (!items.length) return;
+      html += `<div class="all-category-label">${m.icon} ${m.name}</div>`;
+      html += `<div class="items-grid" style="margin-bottom:28px">${items.map((it) => renderCard(it, m)).join("")}</div>`;
+    });
+    main.innerHTML = html;
+  }
+
+  function renderSearchResults() {
+    const main = document.getElementById("mainContent");
+    if (!main) return;
+    const q = searchQuery.trim().toLowerCase();
+    const matched = S.items.filter(
+      (it) =>
+        it.name.toLowerCase().includes(q) ||
+        (it.desc && it.desc.toLowerCase().includes(q))
+    );
+    if (!matched.length) {
+      main.innerHTML = `<div class="no-results">
+        <span class="no-results-icon">🔍</span>
+        <p>لا توجد نتائج لـ "${searchQuery}"</p>
+      </div>`;
+      return;
+    }
+    let html = `<div class="search-results-header">
+      <span class="sr-icon">🔍</span>
+      <span class="sr-label">نتائج البحث عن "${searchQuery}"</span>
+      <span class="sr-count">${matched.length} نتيجة</span>
+    </div>`;
+    html += `<div class="items-grid">${matched.map((it) => {
+      const m = S.menus.find((x) => x.id === it.menuId) || { icon: "🌯", name: "" };
+      return renderCard(it, m);
+    }).join("")}</div>`;
+    main.innerHTML = html;
   }
 
   function renderBanner(m, bg, count) {
@@ -1173,6 +1240,29 @@ function resolveImgUrl(path) {
     }
 
     render();
+
+    /* ── SEARCH EVENTS ── */
+    const searchInput = document.getElementById("searchInput");
+    const searchClear = document.getElementById("searchClear");
+
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        searchQuery = searchInput.value;
+        searchClear.classList.toggle("visible", searchQuery.length > 0);
+        renderSearchOrAll();
+      });
+    }
+
+    if (searchClear) {
+      searchClear.addEventListener("click", () => {
+        searchQuery = "";
+        searchInput.value = "";
+        searchClear.classList.remove("visible");
+        renderSearchOrAll();
+        searchInput.focus();
+      });
+    }
+
     /* hide loader */
     const hideLoader = () => {
       const l = document.getElementById("pageLoader");
