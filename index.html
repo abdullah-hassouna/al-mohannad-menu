@@ -56,16 +56,30 @@
       <p class="hero-sub" id="heroSub">
         أشهى شاورما بالفحم — طعم الأصالة بكل لقمة 🔥
       </p>
-      <div class="hero-badges" id="heroBadges">
-        <span class="hero-badge wavy-text">
-          <span style="--i: 1">اهلا</span>
-          <span style="--i: 2">وسهلا </span>
-          <span style="--i: 3">بكم </span>
-          <span style="--i: 4">في </span>
-          <span style="--i: 5">مطعم </span>
-          <span style="--i: 6">مهند</span>
-        </span>
+      <div class="ticker-wrapper">
+        <marquee
+          behavior="scroll"
+          direction="left"
+          scrollamount="15"
+          scrolldelay="0"
+          onmouseover="this.stop()"
+          onmouseout="this.start()"
+        >
+          <span>اهلا وسهلا بكم في مطعم مهند</span>
+        </marquee>
       </div>
+      <!-- <div class="ticker-content-box" id="heroBadges">
+        <div class="ticker-track">
+          <span class="ticker-text">
+            <span>اهلا وسهلا بكم في مطعم مهند</span>
+            <span>اهلا وسهلا بكم في مطعم مهند</span>
+          </span>
+          <span class="ticker-text2">
+            <span>اهلا وسهلا بكم في مطعم مهند</span>
+            <span>اهلا وسهلا بكم في مطعم مهند</span>
+          </span>
+        </div>
+      </div> -->
       <div class="hero-socials" id="heroSocials"></div>
       <div class="wave-wrap">
         <svg
