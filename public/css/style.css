@@ -654,7 +654,7 @@ body {
   position: sticky;
   top: 62px;
   z-index: 85;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
 }
 .search-inner {
   max-width: 1120px;
@@ -668,7 +668,9 @@ body {
   border: 1.5px solid var(--g200);
   border-radius: var(--r-xl);
   padding: 0 16px;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 }
 .search-box:focus-within {
   border-color: var(--amber);
@@ -708,7 +710,9 @@ body {
   padding: 4px 6px;
   border-radius: 50%;
   display: none;
-  transition: color 0.2s, background 0.2s;
+  transition:
+    color 0.2s,
+    background 0.2s;
   line-height: 1;
 }
 .search-clear:hover {
@@ -791,7 +795,6 @@ body {
 .menu-sec.active {
   display: block;
   animation: fadeUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-
 }
 
 /* ═══════════════ CATEGORY BANNER ═══════════════ */
@@ -1749,5 +1752,34 @@ body {
     flex-direction: column;
     text-align: center;
     gap: 14px;
+  }
+}
+
+.wavy-text {
+  position: relative;
+}
+
+.wavy-text span {
+  position: relative;
+  display: inline-block;
+  color: #fff;
+  font-size: 1.5rem;
+  font-family: sans-serif;
+  font-weight: bold;
+  text-transform: uppercase;
+  /* Bind the keyframes, set duration, loop indefinitely */
+  animation: wave 2.5s ease-in-out infinite;
+  /* Use the custom variable to stagger the delay for each letter */
+  animation-delay: calc(0.1s * var(--i));
+}
+
+/* Define the vertical wave motion */
+@keyframes wave {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
