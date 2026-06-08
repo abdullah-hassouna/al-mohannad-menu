@@ -40,7 +40,7 @@ function resolveImgUrl(path) {
       pw: "123b5e645ffc86f81a6cdd5726cb2a79dcbf5a4ef82cbc1dfc0790276340b313",
       logo: null,
       heroTitle: "شاورما المهند",
-      heroSub: "أشهى شاورما بالفحم — طعم الأصالة بكل لقمة 🔥",
+      heroSub: "شاورما فاخرة / مشاوي مميزة / اكلات غربية على كيفك",
       socials: {
         fb: "https://www.facebook.com/mohanadresturant",
         ig: "https://www.instagram.com/mohanad_resturant/",
@@ -166,6 +166,25 @@ function resolveImgUrl(path) {
     // renderWatermark();
     updateFavicon();
     renderHeroText();
+    bindImagePopups();
+  }
+
+  function bindImagePopups() {
+    const popup = document.getElementById("imagePopup");
+    const popupImg = document.getElementById("popupImg");
+    if (!popup || !popupImg) return;
+    document.querySelectorAll(".item-card").forEach((card) => {
+      card.addEventListener("click", (e) => {
+        // Ignore clicks on the WhatsApp order button
+        if (e.target.closest(".order-btn")) return;
+        // Find inner image
+        const img = card.querySelector(".item-img");
+        if (!img) return;
+        console.log("Card clicked, image src:", img.src);
+        popupImg.src = img.src;
+        popup.classList.remove("hidden");
+      });
+    });
   }
 
   function renderHeroText() {
@@ -231,7 +250,9 @@ function resolveImgUrl(path) {
     if (!main) return;
     main.innerHTML = S.menus
       .map((m, mi) => {
-        const items = S.items.filter((i) => i.menuId === m.id);
+        const items = S.items
+          .filter((i) => i.menuId === m.id)
+          .sort((it1, it2) => it1.price - it2.price);
         const bg = BG_COLORS[mi % BG_COLORS.length];
         const cards = items.length
           ? items.map((it) => renderCard(it, m)).join("")
@@ -256,7 +277,10 @@ function resolveImgUrl(path) {
       const items = S.items.filter((i) => i.menuId === m.id);
       if (!items.length) return;
       html += `<div class="all-category-label">${m.icon} ${m.name}</div>`;
-      html += `<div class="items-grid" style="margin-bottom:28px">${items.map((it) => renderCard(it, m)).join("")}</div>`;
+      html += `<div class="items-grid" style="margin-bottom:28px">${items
+        .sort((it1, it2) => it1.price - it2.price)
+        .map((it) => renderCard(it, m))
+        .join("")}</div>`;
     });
     main.innerHTML = html;
   }
@@ -268,7 +292,7 @@ function resolveImgUrl(path) {
     const matched = S.items.filter(
       (it) =>
         it.name.toLowerCase().includes(q) ||
-        (it.desc && it.desc.toLowerCase().includes(q))
+        (it.desc && it.desc.toLowerCase().includes(q)),
     );
     if (!matched.length) {
       main.innerHTML = `<div class="no-results">
@@ -282,10 +306,16 @@ function resolveImgUrl(path) {
       <span class="sr-label">نتائج البحث عن "${searchQuery}"</span>
       <span class="sr-count">${matched.length} نتيجة</span>
     </div>`;
-    html += `<div class="items-grid">${matched.map((it) => {
-      const m = S.menus.find((x) => x.id === it.menuId) || { icon: "🌯", name: "" };
-      return renderCard(it, m);
-    }).join("")}</div>`;
+    html += `<div class="items-grid">${matched
+      .sort((it1, it2) => it1.price - it2.price)
+      .map((it) => {
+        const m = S.menus.find((x) => x.id === it.menuId) || {
+          icon: "🌯",
+          name: "",
+        };
+        return renderCard(it, m);
+      })
+      .join("")}</div>`;
     main.innerHTML = html;
   }
 
@@ -318,7 +348,7 @@ function resolveImgUrl(path) {
     return `<div class="item-card">
     <div class="item-img-wrap">
       ${badge}
-      ${it.img ? `<img class="item-img" src="${resolveImgUrl(it.img)}" alt="${it.name}">` : `<div class="item-ph" style="background:${BG_COLORS[S.menus.indexOf(m) % BG_COLORS.length]}">${m.icon}</div>`}
+      ${it.img ? `<img id="item-img-${it.id}" class="item-img" src="${resolveImgUrl(it.img)}" alt="${it.name}">` : `<div class="item-ph" style="background:${BG_COLORS[S.menus.indexOf(m) % BG_COLORS.length]}">${m.icon}</div>`}
     </div>
     <div class="item-body">
       <div class="item-name">${it.name}</div>
@@ -1273,4 +1303,30 @@ function resolveImgUrl(path) {
   }
 
   boot();
+
+  window.openImagePopup = function openImagePopup(imgEl) {
+    console.log("openImagePopup called with src:", imgEl.src);
+    const popupImg = document.getElementById("popupImg");
+    const imagePopup = document.getElementById("imagePopup");
+    if (popupImg && imagePopup) {
+      popupImg.src = imgEl.src;
+      imagePopup.classList.remove("hidden");
+    }
+  };
+
+  // Image popup handling
+  const imagePopup = document.getElementById("imagePopup");
+  const popupImg = document.getElementById("popupImg");
+  // Open on item image click (delegated)
+  document.getElementById("mainContent").addEventListener("click", (e) => {
+    const img = e.target.closest(".item-img");
+    if (img) {
+      popupImg.src = img.src;
+      imagePopup.classList.remove("hidden");
+    }
+  });
+  // Close when clicking anywhere in the popup (backdrop OR the big image)
+  imagePopup.addEventListener("click", () => {
+    imagePopup.classList.add("hidden");
+  });
 })();
