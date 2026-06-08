@@ -39,7 +39,7 @@ function resolveImgUrl(path) {
     DEFAULT_STATE: {
       pw: "123b5e645ffc86f81a6cdd5726cb2a79dcbf5a4ef82cbc1dfc0790276340b313",
       logo: null,
-      heroTitle: "شاورما المهند",
+      heroTitle: "مطعم مهند",
       heroSub: "شاورما فاخرة / مشاوي مميزة / اكلات غربية على كيفك",
       socials: {
         fb: "https://www.facebook.com/mohanadresturant",
@@ -190,11 +190,11 @@ function resolveImgUrl(path) {
   function renderHeroText() {
     const t = document.getElementById("heroTitle");
     const s = document.getElementById("heroSub");
-    if (t) t.textContent = S.heroTitle || "شاورما المهند";
+    if (t) t.textContent = S.heroTitle || "مطعم مهند";
     if (s) s.textContent = S.heroSub || "";
 
     const ft = document.getElementById("footerTitle");
-    if (ft) ft.textContent = S.heroTitle || "شاورما المهند";
+    if (ft) ft.textContent = S.heroTitle || "مطعم مهند";
   }
 
   function renderNav() {
